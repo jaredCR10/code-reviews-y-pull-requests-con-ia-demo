@@ -1,0 +1,28 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar vehículo (CU-06)</b>
+==
+<b>Datos del vehículo</b>
+{
+  Placa | "XYZ-999          "
+  Marca | "Toyota           "
+  Modelo | "Corolla          "
+  Año | "2015             "
+}
+<b>Datos del propietario</b>
+{
+  Nombre | "Carlos Mora                 "
+  Contacto | "8888-1234                  "
+}
+{
+  [Registrar vehículo] | [Cancelar]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  Falta un dato obligatorio o la placa es inválida. Se indican los datos por corregir (por ejemplo: La marca es obligatoria).
+FA-02:  [Cancelar] descarta los datos y regresa al caso de uso que abrió el registro.
+}
+}
+@endsalt

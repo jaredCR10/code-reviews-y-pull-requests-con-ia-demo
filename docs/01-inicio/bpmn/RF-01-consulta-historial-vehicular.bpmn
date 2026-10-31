@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_RF01" targetNamespace="http://bizagi.com/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.28.0">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Taller" name="Taller Mecánico El Paraíso" processRef="Process_Taller_RF01" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Taller_RF01" name="Taller Mecánico El Paraíso" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Process_Taller_RF01">
+      <bpmn:lane id="Lane_Mecanico_RF01" name="Mecánico (Nacho / Chalo)">
+        <bpmn:flowNodeRef>M1</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Recepcion_RF01" name="Recepción (Don Chepe)">
+        <bpmn:flowNodeRef>R0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R8</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4a</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4b</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="R0" name="Vehículo con falla ingresado al taller">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:receiveTask id="R1" name="Recibir reporte de falla del cliente">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:manualTask id="R2" name="Buscar antecedentes del vehículo en libretas físicas">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="R3" name="¿Existe registro de garantía o repuesto anterior?">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Si</bpmn:outgoing>
+      <bpmn:outgoing>Flow_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="R6" name="Comunicar el hallazgo al mecánico">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="M1" name="Diagnosticar la falla considerando el antecedente">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sendTask id="R7" name="Comunicar diagnóstico y garantía al cliente">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="R8" name="Cliente informado sobre antecedente y diagnóstico">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="R5" name="">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="R4a" name="Confirmar cobertura de garantía según la libreta">
+      <bpmn:incoming>Flow_Si</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="R4b" name="Continuar sin certeza sobre garantía o repuesto previo">
+      <bpmn:incoming>Flow_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="R0" targetRef="R1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="R1" targetRef="R2" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="R2" targetRef="R3" />
+    <bpmn:sequenceFlow id="Flow_Si" name="Sí" sourceRef="R3" targetRef="R4a" />
+    <bpmn:sequenceFlow id="Flow_No" name="No" sourceRef="R3" targetRef="R4b" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="R5" targetRef="R6" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="R6" targetRef="M1" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="M1" targetRef="R7" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="R7" targetRef="R8" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="R4a" targetRef="R5" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="R4b" targetRef="R5" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Taller_di" bpmnElement="Participant_Taller" isHorizontal="true">
+        <omgdc:Bounds x="157" y="80" width="1756" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Mecanico_RF01_di" bpmnElement="Lane_Mecanico_RF01" isHorizontal="true">
+        <omgdc:Bounds x="187" y="320" width="1726" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Recepcion_RF01_di" bpmnElement="Lane_Recepcion_RF01" isHorizontal="true">
+        <omgdc:Bounds x="187" y="80" width="1726" height="240" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R0_di" bpmnElement="R0">
+        <omgdc:Bounds x="207" y="207" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R1_di" bpmnElement="R1">
+        <omgdc:Bounds x="277" y="185" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R2_di" bpmnElement="R2">
+        <omgdc:Bounds x="467" y="185" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R3_di" bpmnElement="R3" isMarkerVisible="true">
+        <omgdc:Bounds x="657" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="572" y="260" width="90" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R6_di" bpmnElement="R6">
+        <omgdc:Bounds x="1227" y="185" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="M1_di" bpmnElement="M1">
+        <omgdc:Bounds x="1417" y="355" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R7_di" bpmnElement="R7">
+        <omgdc:Bounds x="1607" y="185" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R8_di" bpmnElement="R8">
+        <omgdc:Bounds x="1797" y="207" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1772" y="243" width="87" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R5_di" bpmnElement="R5" isMarkerVisible="true">
+        <omgdc:Bounds x="1072" y="200" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R4a_di" bpmnElement="R4a">
+        <omgdc:Bounds x="847" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R4b_di" bpmnElement="R4b">
+        <omgdc:Bounds x="847" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <omgdi:waypoint x="243" y="225" />
+        <omgdi:waypoint x="277" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <omgdi:waypoint x="377" y="225" />
+        <omgdi:waypoint x="467" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <omgdi:waypoint x="567" y="225" />
+        <omgdi:waypoint x="657" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Si_di" bpmnElement="Flow_Si">
+        <omgdi:waypoint x="682" y="200" />
+        <omgdi:waypoint x="682" y="180" />
+        <omgdi:waypoint x="847" y="180" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="692" y="178" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_di" bpmnElement="Flow_No">
+        <omgdi:waypoint x="682" y="250" />
+        <omgdi:waypoint x="682" y="280" />
+        <omgdi:waypoint x="847" y="280" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="690" y="263" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <omgdi:waypoint x="1122" y="225" />
+        <omgdi:waypoint x="1227" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <omgdi:waypoint x="1277" y="265" />
+        <omgdi:waypoint x="1277" y="395" />
+        <omgdi:waypoint x="1417" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <omgdi:waypoint x="1467" y="355" />
+        <omgdi:waypoint x="1467" y="225" />
+        <omgdi:waypoint x="1607" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <omgdi:waypoint x="1707" y="225" />
+        <omgdi:waypoint x="1797" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <omgdi:waypoint x="937" y="220" />
+        <omgdi:waypoint x="1072" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <omgdi:waypoint x="947" y="280" />
+        <omgdi:waypoint x="1097" y="280" />
+        <omgdi:waypoint x="1097" y="250" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,30 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar llegada de vehículo sin cita (CU-07)</b>
+==
+{
+  Placa del vehículo | "CL-8942       " | Servicio solicitado | "Revisión de frenos     "
+}
+<b>Disponibilidad de rampas hoy</b>
+{#
+  Franja | Rampa 1 | Rampa 2
+  8:00 a. m. | Ocupada | Ocupada
+  10:00 a. m. | Ocupada | Libre
+  1:00 p. m. | Libre | Libre
+}
+{
+  Rampa | ^Rampa 2^ | Franja | ^10:00 a. m.^
+}
+{
+  [Registrar ingreso sin cita] | [Cancelar]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  No hay espacio disponible en el día.
+FA-02:  La placa no está registrada. Se abre el registro del vehículo (CU-06).
+Éxito:  El ingreso queda en la agenda con la marca Sin cita previa y la rampa ocupada en la franja.
+}
+}
+@endsalt

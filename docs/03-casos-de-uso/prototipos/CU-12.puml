@@ -1,0 +1,28 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar cobro final (CU-12)</b>
+==
+{
+  Orden de trabajo | ^102 - Cerrada^ | [Seleccionar]
+}
+--
+{
+  Presupuesto aprobado: | ₡20 000
+  Monto final cobrado (₡) | "22 500        "
+}
+{
+  Diferencia respecto al presupuesto: | <b>+₡2 500</b>
+}
+{
+  [Registrar cobro final]
+}
+<i>Este registro no emite factura electrónica (fuera del alcance).</i>
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  El monto debe ser un valor numérico mayor que cero.
+FA-02:  La orden no existe, no está cerrada o ya fue cobrada.
+}
+}
+@endsalt

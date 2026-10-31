@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_RF03" targetNamespace="http://bizagi.com/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.28.0">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Taller" name="Taller Mecánico El Paraíso" processRef="Process_Taller_RF03" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Taller_RF03" name="Taller Mecánico El Paraíso" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Process_Taller_RF03">
+      <bpmn:lane id="Lane_Mecanico_RF03" name="Mecánico (Nacho / Chalo)">
+        <bpmn:flowNodeRef>M1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>M2</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Recepcion_RF03" name="Recepción (Don Chepe)">
+        <bpmn:flowNodeRef>R0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R8</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5b</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R5a</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="R0" name="Necesidad de cotización identificada">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:receiveTask id="R1" name="Recibir solicitud de cotización">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:manualTask id="M1" name="Estimar y comunicar repuestos y mano de obra desde la rampa">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="R2" name="Elaborar presupuesto con base en la estimación verbal">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sendTask id="R3" name="Enviar presupuesto estimado por WhatsApp">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:manualTask id="M2" name="Ejecutar la reparación utilizando los repuestos requeridos">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="R4" name="¿El costo real coincide con el presupuesto estimado?">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_Si</bpmn:outgoing>
+      <bpmn:outgoing>Flow_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="R6" name="">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="R7" name="Entregar factura final al cliente">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="R8" name="Cobro finalizado">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:manualTask id="R5b" name="Asumir la diferencia no cobrada por repuestos o líquidos omitidos">
+      <bpmn:incoming>Flow_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="R5a" name="Cobrar el monto estimado">
+      <bpmn:incoming>Flow_Si</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="R0" targetRef="R1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="R1" targetRef="M1" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="M1" targetRef="R2" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="R2" targetRef="R3" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="R3" targetRef="M2" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="M2" targetRef="R4" />
+    <bpmn:sequenceFlow id="Flow_Si" name="Sí" sourceRef="R4" targetRef="R5a" />
+    <bpmn:sequenceFlow id="Flow_No" name="No" sourceRef="R4" targetRef="R5b" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="R5a" targetRef="R6" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="R5b" targetRef="R6" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="R6" targetRef="R7" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="R7" targetRef="R8" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Taller_di" bpmnElement="Participant_Taller" isHorizontal="true">
+        <omgdc:Bounds x="150" y="80" width="1946" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Mecanico_RF03_di" bpmnElement="Lane_Mecanico_RF03" isHorizontal="true">
+        <omgdc:Bounds x="180" y="320" width="1916" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Recepcion_RF03_di" bpmnElement="Lane_Recepcion_RF03" isHorizontal="true">
+        <omgdc:Bounds x="180" y="80" width="1916" height="240" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R0_di" bpmnElement="R0">
+        <omgdc:Bounds x="200" y="187" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R1_di" bpmnElement="R1">
+        <omgdc:Bounds x="270" y="165" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="M1_di" bpmnElement="M1">
+        <omgdc:Bounds x="460" y="335" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R2_di" bpmnElement="R2">
+        <omgdc:Bounds x="650" y="165" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R3_di" bpmnElement="R3">
+        <omgdc:Bounds x="840" y="165" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="M2_di" bpmnElement="M2">
+        <omgdc:Bounds x="1030" y="335" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R4_di" bpmnElement="R4" isMarkerVisible="true">
+        <omgdc:Bounds x="1220" y="180" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1279.5" y="178" width="73" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R6_di" bpmnElement="R6" isMarkerVisible="true">
+        <omgdc:Bounds x="1600" y="180" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R7_di" bpmnElement="R7">
+        <omgdc:Bounds x="1790" y="165" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R8_di" bpmnElement="R8">
+        <omgdc:Bounds x="1980" y="187" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1958" y="223" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R5b_di" bpmnElement="R5b">
+        <omgdc:Bounds x="1410" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R5a_di" bpmnElement="R5a">
+        <omgdc:Bounds x="1410" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <omgdi:waypoint x="236" y="205" />
+        <omgdi:waypoint x="270" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <omgdi:waypoint x="320" y="245" />
+        <omgdi:waypoint x="320" y="375" />
+        <omgdi:waypoint x="460" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <omgdi:waypoint x="510" y="335" />
+        <omgdi:waypoint x="510" y="205" />
+        <omgdi:waypoint x="650" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <omgdi:waypoint x="750" y="205" />
+        <omgdi:waypoint x="840" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <omgdi:waypoint x="890" y="245" />
+        <omgdi:waypoint x="890" y="375" />
+        <omgdi:waypoint x="1030" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <omgdi:waypoint x="1080" y="335" />
+        <omgdi:waypoint x="1080" y="205" />
+        <omgdi:waypoint x="1220" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Si_di" bpmnElement="Flow_Si">
+        <omgdi:waypoint x="1245" y="180" />
+        <omgdi:waypoint x="1245" y="140" />
+        <omgdi:waypoint x="1410" y="140" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1255" y="138" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_di" bpmnElement="Flow_No">
+        <omgdi:waypoint x="1245" y="230" />
+        <omgdi:waypoint x="1245" y="260" />
+        <omgdi:waypoint x="1410" y="260" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1253" y="243" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <omgdi:waypoint x="1510" y="140" />
+        <omgdi:waypoint x="1625" y="140" />
+        <omgdi:waypoint x="1625" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <omgdi:waypoint x="1510" y="250" />
+        <omgdi:waypoint x="1625" y="250" />
+        <omgdi:waypoint x="1625" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <omgdi:waypoint x="1650" y="205" />
+        <omgdi:waypoint x="1790" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <omgdi:waypoint x="1890" y="205" />
+        <omgdi:waypoint x="1980" y="205" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

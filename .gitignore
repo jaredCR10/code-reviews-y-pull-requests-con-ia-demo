@@ -1,0 +1,9 @@
+# Variables de ambiente con credenciales locales
+.env
+
+# Sistema
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/

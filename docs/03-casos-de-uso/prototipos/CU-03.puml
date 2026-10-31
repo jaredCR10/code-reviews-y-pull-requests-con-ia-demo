@@ -1,0 +1,35 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Asociar insumo a orden de trabajo (CU-03)</b>
+==
+{
+  Orden de trabajo | ^102 - Aprobada^ | [Seleccionar]
+}
+--
+{
+  Buscar insumo | "Aceite 10W-30      " | [Buscar]
+}
+{
+  Insumo: Aceite 10W-30 | Existencia disponible: 10
+}
+{
+  Cantidad utilizada | "2   " | [Asociar a la orden]
+}
+--
+<b>Insumos asociados a la orden 102</b>
+{#
+  Insumo | Cantidad | Existencia tras descuento | Marca
+  Aceite 10W-30 | 2 | 8 | .
+}
+{
+  [Finalizar asociaciones]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  Existencia insuficiente. Disponible: X   [Confirmar marca Por pedir a proveedor]  [No confirmar]
+FA-03:  Insumo no encontrado en el catálogo.
+}
+}
+@endsalt

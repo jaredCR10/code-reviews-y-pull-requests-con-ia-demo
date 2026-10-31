@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_RF05" targetNamespace="http://bizagi.com/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.28.0">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Taller" name="Taller Mecánico El Paraíso" processRef="Process_Taller_RF05" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Taller_RF05" name="Taller Mecánico El Paraíso" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Process_Taller_RF05">
+      <bpmn:lane id="Lane_Mecanico_RF05" name="Mecánico (Nacho / Chalo)">
+        <bpmn:flowNodeRef>M1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>M2</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Recepcion_RF05" name="Recepción (Don Chepe)">
+        <bpmn:flowNodeRef>R0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>R4</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="R0" name="Consulta del cliente generada">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:receiveTask id="R1" name="Recibir llamada del cliente preguntando por el vehículo">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:manualTask id="R2" name="Interrumpir la atención de recepción para consultar al mecánico">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="M1" name="Interrumpir el trabajo técnico para responder la consulta">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="M2" name="Indicar el estado actual de la reparación a recepción">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sendTask id="R3" name="Informar el estado del vehículo al cliente por teléfono">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="R4" name="Consulta atendida">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="R0" targetRef="R1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="R1" targetRef="R2" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="R2" targetRef="M1" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="M1" targetRef="M2" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="M2" targetRef="R3" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="R3" targetRef="R4" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Taller_di" bpmnElement="Participant_Taller" isHorizontal="true">
+        <omgdc:Bounds x="150" y="80" width="1186" height="340" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Mecanico_RF05_di" bpmnElement="Lane_Mecanico_RF05" isHorizontal="true">
+        <omgdc:Bounds x="180" y="250" width="1156" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Recepcion_RF05_di" bpmnElement="Lane_Recepcion_RF05" isHorizontal="true">
+        <omgdc:Bounds x="180" y="80" width="1156" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R0_di" bpmnElement="R0">
+        <omgdc:Bounds x="200" y="147" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R1_di" bpmnElement="R1">
+        <omgdc:Bounds x="270" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R2_di" bpmnElement="R2">
+        <omgdc:Bounds x="460" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="M1_di" bpmnElement="M1">
+        <omgdc:Bounds x="650" y="295" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="M2_di" bpmnElement="M2">
+        <omgdc:Bounds x="840" y="295" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R3_di" bpmnElement="R3">
+        <omgdc:Bounds x="1030" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R4_di" bpmnElement="R4">
+        <omgdc:Bounds x="1220" y="147" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1194" y="183" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <omgdi:waypoint x="236" y="165" />
+        <omgdi:waypoint x="270" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <omgdi:waypoint x="370" y="165" />
+        <omgdi:waypoint x="460" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <omgdi:waypoint x="510" y="205" />
+        <omgdi:waypoint x="510" y="335" />
+        <omgdi:waypoint x="650" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <omgdi:waypoint x="750" y="335" />
+        <omgdi:waypoint x="840" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <omgdi:waypoint x="890" y="295" />
+        <omgdi:waypoint x="890" y="165" />
+        <omgdi:waypoint x="1030" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <omgdi:waypoint x="1130" y="165" />
+        <omgdi:waypoint x="1220" y="165" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

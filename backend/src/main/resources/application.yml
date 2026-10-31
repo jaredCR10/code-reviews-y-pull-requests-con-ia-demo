@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: tallerauto-backend
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:tallerauto}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USER:tallerauto}
+    password: ${DB_PASSWORD:tallerauto}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # Liquibase es la única fuente de verdad del esquema; Hibernate solo valida
+      # que las entidades concuerden con las tablas creadas por las migraciones.
+      ddl-auto: validate
+    open-in-view: false
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+server:
+  port: ${SERVER_PORT:8080}

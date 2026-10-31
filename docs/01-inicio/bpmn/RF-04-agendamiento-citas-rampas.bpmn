@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_RF04" targetNamespace="http://bizagi.com/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.28.0">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_Recepcion" name="Recepción (Don Chepe)" processRef="Process_Recepcion_RF04" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Recepcion_RF04" name="Recepción (Don Chepe)" isExecutable="false">
+    <bpmn:startEvent id="R0" name="Solicitud de atención generada">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:receiveTask id="R1" name="Recibir solicitud de cita o llegada del cliente">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:manualTask id="R2" name="Anotar la cita en la pizarra física">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="R3" name="¿Hay rampa disponible a la hora solicitada?">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Si</bpmn:outgoing>
+      <bpmn:outgoing>Flow_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="R4a" name="Confirmar la cita y recibir el vehículo">
+      <bpmn:incoming>Flow_Si</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="R5" name="">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="R6" name="Comunicar el estado de atención al cliente">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="R7" name="Cita gestionada">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:manualTask id="R4b" name="Parquear el vehículo en la vía pública en espera de rampa">
+      <bpmn:incoming>Flow_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="R0" targetRef="R1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="R1" targetRef="R2" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="R2" targetRef="R3" />
+    <bpmn:sequenceFlow id="Flow_Si" name="Sí" sourceRef="R3" targetRef="R4a" />
+    <bpmn:sequenceFlow id="Flow_No" name="No" sourceRef="R3" targetRef="R4b" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="R4a" targetRef="R5" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="R4b" targetRef="R5" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="R5" targetRef="R6" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="R6" targetRef="R7" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_Recepcion_di" bpmnElement="Participant_Recepcion" isHorizontal="true">
+        <omgdc:Bounds x="160" y="80" width="1376" height="230" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R0_di" bpmnElement="R0">
+        <omgdc:Bounds x="200" y="147" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R1_di" bpmnElement="R1">
+        <omgdc:Bounds x="280" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R2_di" bpmnElement="R2">
+        <omgdc:Bounds x="470" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R3_di" bpmnElement="R3" isMarkerVisible="true">
+        <omgdc:Bounds x="660" y="140" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="720" y="145" width="78" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R4a_di" bpmnElement="R4a">
+        <omgdc:Bounds x="850" y="85" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R5_di" bpmnElement="R5" isMarkerVisible="true">
+        <omgdc:Bounds x="1040" y="140" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R6_di" bpmnElement="R6">
+        <omgdc:Bounds x="1230" y="125" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R7_di" bpmnElement="R7">
+        <omgdc:Bounds x="1420" y="147" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1400" y="183" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="R4b_di" bpmnElement="R4b">
+        <omgdc:Bounds x="850" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <omgdi:waypoint x="236" y="165" />
+        <omgdi:waypoint x="280" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <omgdi:waypoint x="380" y="165" />
+        <omgdi:waypoint x="470" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <omgdi:waypoint x="570" y="165" />
+        <omgdi:waypoint x="660" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Si_di" bpmnElement="Flow_Si">
+        <omgdi:waypoint x="685" y="140" />
+        <omgdi:waypoint x="685" y="125" />
+        <omgdi:waypoint x="850" y="125" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="695" y="123" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_No_di" bpmnElement="Flow_No">
+        <omgdi:waypoint x="685" y="190" />
+        <omgdi:waypoint x="685" y="240" />
+        <omgdi:waypoint x="850" y="240" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="693" y="223" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <omgdi:waypoint x="950" y="125" />
+        <omgdi:waypoint x="1065" y="125" />
+        <omgdi:waypoint x="1065" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <omgdi:waypoint x="950" y="240" />
+        <omgdi:waypoint x="1065" y="240" />
+        <omgdi:waypoint x="1065" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <omgdi:waypoint x="1090" y="165" />
+        <omgdi:waypoint x="1230" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <omgdi:waypoint x="1330" y="165" />
+        <omgdi:waypoint x="1420" y="165" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,33 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Actualizar estado de vehículo (CU-05)</b>
+==
+{
+  Buscar por | (X) Placa  () N.º de orden | "CL-8942       " | [Buscar]
+}
+{
+  Estado actual: En Diagnóstico | Último cambio: 20/09/2026 8:15 a. m.
+}
+<b>Nuevo estado</b>
+{
+  () Ingresado | () En Diagnóstico | () Esperando Repuesto
+  (X) En Reparación | () Listo para Entrega | () Entregado
+}
+{
+  [Actualizar estado]
+}
+--
+<b>Tablero de estados</b>
+{#
+  Ingresado | En Diagnóstico | Esperando Repuesto | En Reparación | Listo para Entrega | Entregado
+  SDF-456 | CL-8942 | . | ABC-123 | . | .
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  El vehículo ya se encuentra en ese estado.
+FA-02:  No se encontró un vehículo con orden de trabajo para el dato ingresado.
+}
+}
+@endsalt

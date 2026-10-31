@@ -1,0 +1,46 @@
+@startuml rf-04-citas-y-rampas
+' Generado por generar_diagramas_cu.py a partir de la matriz 7.0.2. No editar a mano.
+left to right direction
+skinparam shadowing false
+skinparam dpi 130
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam nodesep 20
+skinparam ranksep 120
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #222222
+skinparam ActorBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #1F3A5F
+skinparam UsecaseFontSize 11
+skinparam RectangleBorderColor #1F3A5F
+skinparam RectangleBackgroundColor #FFFFFF
+
+title RF-04 Citas y rampas\nCasos de uso: CU-07, CU-04
+
+actor "Administrador\ndel Taller" as ADM
+actor "Cliente" as CLI
+rectangle "Frontera del sistema: TallerAuto" as SYS {
+  usecase "CU-06\nRegistrar Vehículo" as CU06 #EDEDED
+  usecase "CU-07\nRegistrar Llegada de\nVehículo sin Cita" as CU07 #FFE9A8
+  usecase "CU-04\nAgendar Cita de\nMantenimiento" as CU04 #FFE9A8
+}
+
+CU06 -[hidden]right- CU07
+CU07 -[hidden]right- CU04
+
+ADM -down- CU07
+CU07 -down-> CLI
+ADM -down- CU04
+CU04 -down-> CLI
+
+CU06 .right.> CU04 : <<extend>>
+CU06 .right.> CU07 : <<extend>>
+CU07 .right.> CU04 : <<extend>>
+
+legend bottom
+  CU-06 extiende a CU-04 en el punto de extensión "placa no registrada"
+  CU-06 extiende a CU-07 en el punto de extensión "placa no registrada"
+  CU-07 extiende a CU-04 en el punto de extensión "cliente sin cita"
+endlegend
+@enduml

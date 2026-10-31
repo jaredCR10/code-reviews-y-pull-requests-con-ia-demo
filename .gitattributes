@@ -1,0 +1,10 @@
+# Normaliza todos los archivos de texto a LF, sin importar el SO o editor
+# de quien los edite. Evita diffs falsos por CRLF/LF entre los 3 integrantes
+# y previene errores reales de scripts (.sh, Dockerfiles) al correr en Linux.
+* text=auto eol=lf
+
+# Binarios: Git no debe tocar su contenido ni intentar mostrar diffs de texto
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary

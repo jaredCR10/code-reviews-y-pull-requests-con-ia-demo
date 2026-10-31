@@ -1,0 +1,35 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar servicio y cerrar orden de trabajo (CU-11)</b>
+==
+{
+  Orden de trabajo | ^102 - Aprobada^ | [Seleccionar]
+}
+--
+{
+  Diagnóstico inicial: | Ruido en el motor, posible falla de bomba de agua
+}
+{#
+  Insumos asociados | Cantidad | Garantía
+  Bomba de agua | 1 | "6 meses    "
+}
+{
+  Mano de obra del presupuesto: | 2 horas
+}
+--
+{
+  Diagnóstico final | "Cambio de bomba de agua                    "
+  Comentarios técnicos | "Se purgó el sistema de enfriamiento       "
+}
+{
+  [Confirmar cierre de la orden] | [Cancelar]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  [Cancelar] descarta los datos y la orden sigue Aprobada.
+FA-02:  La orden no existe o no está aprobada.
+}
+}
+@endsalt

@@ -1,0 +1,21 @@
+.health-status {
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.health-status--loading {
+  color: #555;
+}
+
+.health-status--ok {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.health-status--error {
+  background: #fdecea;
+  color: #c0392b;
+}

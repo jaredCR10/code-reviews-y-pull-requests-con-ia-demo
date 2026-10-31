@@ -1,0 +1,43 @@
+@startuml rf-03-control-de-insumos
+' Generado por generar_diagramas_cu.py a partir de la matriz 7.0.2. No editar a mano.
+left to right direction
+skinparam shadowing false
+skinparam dpi 130
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam nodesep 20
+skinparam ranksep 120
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #222222
+skinparam ActorBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #1F3A5F
+skinparam UsecaseFontSize 11
+skinparam RectangleBorderColor #1F3A5F
+skinparam RectangleBackgroundColor #FFFFFF
+
+title RF-03 Control de insumos\nCasos de uso: CU-08, CU-03, CU-13
+
+actor "Administrador\ndel Taller" as ADM
+actor "Mecánico" as MEC
+ADM -[hidden]right- MEC
+rectangle "Frontera del sistema: TallerAuto" as SYS {
+  usecase "CU-02\nRegistrar Orden de Trabajo\ncon Presupuesto" as CU02 #EDEDED
+  usecase "CU-08\nConsultar Existencia\nde Insumo" as CU08 #FFE9A8
+  usecase "CU-03\nAsociar Insumo a\nOrden de Trabajo" as CU03 #FFE9A8
+  usecase "CU-13\nRegistrar Ingreso\nde Insumos" as CU13 #FFE9A8
+}
+
+CU02 -[hidden]right- CU08
+CU08 -[hidden]right- CU03
+CU03 -[hidden]right- CU13
+
+ADM -down- CU08
+MEC -down- CU08
+ADM -down- CU03
+CU03 -up-> MEC
+ADM -down- CU13
+
+CU02 .right.> CU08 : <<include>>
+CU03 .left.> CU08 : <<include>>
+@enduml

@@ -1,0 +1,41 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar orden de trabajo con presupuesto (CU-02)</b>
+==
+{
+  Vehículo (placa) | "SDF-456          " | [Seleccionar]
+  Diagnóstico inicial | "Cambio de aceite y filtro                    "
+  Fallas reportadas por el cliente | "Aceite vencido, pide revisión general  "
+}
+--
+<b>Insumos del presupuesto</b>
+{
+  Buscar insumo | "Filtro de Aceite   " | Cantidad | "1  " | [Agregar insumo]
+}
+{#
+  Insumo | Cant. | Existencia | Precio unitario | Subtotal | Marca | Acción
+  Filtro de Aceite | 1 | 5 | ₡8 000 | ₡8 000 | . | [Editar línea]
+}
+<b>Mano de obra</b>
+{
+  Horas | "1   " | Tarifa por hora (₡) | "12 000   "
+}
+--
+{#
+  Subtotal insumos | ₡8 000
+  Subtotal mano de obra | ₡12 000
+  <b>Total del presupuesto</b> | <b>₡20 000</b>
+}
+{
+  [Confirmar presupuesto] | [Cancelar registro]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  Existencia insuficiente. Disponible: X   [Marcar Por pedir a proveedor]
+FA-02:  [Editar línea] permite cambiar el valor y recalcula subtotales y total.
+FA-03:  ¿Desea cancelar el registro? Se descartarán los datos.   [Sí, cancelar]  [No]
+}
+}
+@endsalt

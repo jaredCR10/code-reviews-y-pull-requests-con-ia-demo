@@ -1,0 +1,141 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="gbnWBUKSmuqWMw0ob9kn" name="Page-1">
+    <mxGraphModel dx="1178" dy="648" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1000" math="0" shadow="0" adaptiveColors="auto">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" value="Diagrama de contexto — TallerAuto" vertex="1">
+          <mxGeometry height="40" width="480" x="520" as="geometry" />
+        </mxCell>
+        <mxCell id="admin" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE9D9;strokeColor=#D79B00;fontSize=14;" value="Administrador&lt;br&gt;del Taller" vertex="1">
+          <mxGeometry height="70" width="240" x="640" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="taller" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D9E8FD;strokeColor=#6C8EBF;fontSize=14;fontStyle=1;" value="TallerAuto&lt;br&gt;(Sistema de Gestión Integral&lt;br&gt;para Taller Mecánico de Barrio)" vertex="1">
+          <mxGeometry height="140" width="360" x="580" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="mecanico" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE9D9;strokeColor=#D79B00;fontSize=14;" value="Mecánico" vertex="1">
+          <mxGeometry height="70" width="200" x="440" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="cliente" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDE9D9;strokeColor=#D79B00;fontSize=14;" value="Cliente" vertex="1">
+          <mxGeometry height="70" width="200" x="1220" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.1;exitY=1;entryX=0.1;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Datos del vehículo">
+          <mxGeometry relative="1" x="0.3114" y="48" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="368.69" y="99.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.2;exitY=1;entryX=0.2;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Orden de trabajo con presupuesto">
+          <mxGeometry relative="1" x="0.1391" y="47" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="528.42" y="214.17" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.3;exitY=1;entryX=0.3;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Cita agendada">
+          <mxGeometry relative="1" x="0.0366" y="15" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="635.36" y="213.47" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.4;exitY=1;entryX=0.4;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Datos de vehículo sin cita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Monto del cobro final">
+          <mxGeometry relative="1" x="0.0436" y="-16" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="830" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.6;exitY=1;entryX=0.6;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Insumos recibidos">
+          <mxGeometry relative="1" x="-0.1591" y="-38" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="915.92" y="311.39" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="admin" style="curved=1;html=1;fontSize=11;exitX=0.7;exitY=1;entryX=0.7;entryY=0;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Placa consultada">
+          <mxGeometry relative="1" x="-0.302" y="-41" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="975.64" y="262.78" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="taller" style="curved=1;html=1;fontSize=11;exitX=0.8;exitY=0;entryX=0.8;entryY=1;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="admin" value="Historial vehicular">
+          <mxGeometry relative="1" x="-0.2199" y="48" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1049.25" y="190.56" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="taller" style="curved=1;html=1;fontSize=11;exitX=0.9;exitY=0;entryX=0.9;entryY=1;strokeColor=#4472C4;fontColor=#2F528F;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="admin" value="Existencia de insumo">
+          <mxGeometry relative="1" x="-0.335" y="40" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1231.89" y="58.61" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="taller" style="curved=1;html=1;fontSize=11;exitX=0.08;exitY=1;entryX=0.15;entryY=0;strokeColor=#548235;fontColor=#375623;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="mecanico" value="Historial vehicular">
+          <mxGeometry relative="1" x="-0.3589" y="14" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="377.03" y="605.14" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="taller" style="curved=1;html=1;fontSize=11;exitX=0.18;exitY=1;entryX=0.35;entryY=0;strokeColor=#548235;fontColor=#375623;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="mecanico" value="Existencia de insumo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="515.22" y="625.97" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="mecanico" style="curved=1;html=1;fontSize=11;exitX=0.55;exitY=0;entryX=0.28;entryY=1;strokeColor=#548235;fontColor=#375623;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Estado actualizado del vehículo">
+          <mxGeometry relative="1" x="-0.1458" y="21" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <Array as="points">
+              <mxPoint x="680.8" y="618.33" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="mecanico" style="curved=1;html=1;fontSize=11;exitX=0.75;exitY=0;entryX=0.38;entryY=1;strokeColor=#548235;fontColor=#375623;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Servicio realizado">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="742.31" y="647.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="mecanico" style="curved=1;html=1;fontSize=11;exitX=0.9;exitY=0;entryX=0.45;entryY=1;strokeColor=#548235;fontColor=#375623;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Placa consultada">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="833.28" y="669.72" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="taller" style="curved=1;html=1;fontSize=11;exitX=1;exitY=0.15;entryX=0;entryY=0.15;strokeColor=#ED7D31;fontColor=#9C4C11;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="cliente" value="Presupuesto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="taller" style="curved=1;html=1;fontSize=11;exitX=1;exitY=0.4;entryX=0;entryY=0.4;strokeColor=#ED7D31;fontColor=#9C4C11;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="cliente" value="Estado del vehículo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="cliente" style="curved=1;html=1;fontSize=11;exitX=0;exitY=0.65;entryX=1;entryY=0.65;strokeColor=#ED7D31;fontColor=#9C4C11;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Datos de solicitud de cita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="cliente" style="curved=1;html=1;fontSize=11;exitX=0;exitY=0.9;entryX=1;entryY=0.9;strokeColor=#ED7D31;fontColor=#9C4C11;labelBackgroundColor=default;defaultLabelBackgroundColor=gap;labelPlacement=auto;" target="taller" value="Aprobación de presupuesto">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

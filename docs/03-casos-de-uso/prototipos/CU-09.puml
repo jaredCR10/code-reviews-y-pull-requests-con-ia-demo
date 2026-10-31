@@ -1,0 +1,27 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Consultar estado de vehículo (CU-09)</b>
+==
+{
+  Buscar por | (X) Placa  () N.º de orden | "CL-8942       " | [Consultar]
+}
+--
+{
+  <b>Estado actual: Listo para Entrega</b> | Último cambio: 20/09/2026 3:40 p. m.
+}
+<b>Recorrido de estados</b>
+{#
+  Fecha y hora | Estado
+  18/09/2026 8:05 a. m. | Ingresado
+  18/09/2026 9:30 a. m. | En Diagnóstico
+  19/09/2026 10:15 a. m. | En Reparación
+  20/09/2026 3:40 p. m. | Listo para Entrega
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  No se encontró un vehículo con orden de trabajo para el dato ingresado.
+}
+}
+@endsalt

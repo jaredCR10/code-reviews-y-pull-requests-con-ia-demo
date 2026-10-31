@@ -1,0 +1,31 @@
+# Plantilla de configuración local.
+#
+# Cómo usarla:
+#   1. Levanta la base de datos:  docker compose up -d   (desde la raíz del repo)
+#   2. Copia .env.example a .env y ajusta los valores si hace falta.
+#   3. Corre el backend:  cd backend && mvn spring-boot:run
+#
+# El backend lee las credenciales desde variables de ambiente. Los valores por
+# defecto de abajo coinciden con los de docker-compose, así que funciona sin
+# configurar nada extra en local. NUNCA pongas credenciales reales en este archivo.
+
+spring:
+  application:
+    name: tallerauto-backend
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:tallerauto}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USER:tallerauto}
+    password: ${DB_PASSWORD:tallerauto}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+server:
+  port: ${SERVER_PORT:8080}

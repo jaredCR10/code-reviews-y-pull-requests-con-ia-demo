@@ -1,0 +1,128 @@
+@startuml diagrama-casos-de-uso
+' ==========================================================================
+' TallerAuto - Diagrama de casos de uso (Entregable 1 / PC1, IF-6100)
+' Fuente de verdad: detalle_de_casos_de_uso, seccion 7.0.2 (matriz RF-CU)
+'
+' Notacion:
+'   Actor primario   -> asociacion simple (opera el sistema)
+'   Actor secundario -> asociacion con flecha hacia el actor
+'   <<include>>      -> flecha punteada del caso base al caso incluido
+'   <<extend>>       -> flecha punteada del caso que extiende al caso base
+'
+' Nota tecnica: en "left to right direction" de PlantUML, -right-/-left-
+' apilan verticalmente y -down-/-up- avanzan en horizontal. Los enlaces
+' [hidden] solo fijan el orden vertical de los casos de uso para que los
+' casos relacionados queden contiguos.
+' ==========================================================================
+left to right direction
+skinparam shadowing false
+skinparam dpi 130
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam nodesep 16
+skinparam ranksep 190
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #222222
+skinparam ActorBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #1F3A5F
+skinparam UsecaseBackgroundColor #EAF1FB
+skinparam UsecaseFontSize 11
+skinparam RectangleBorderColor #1F3A5F
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam LegendBackgroundColor #FFFDF2
+skinparam LegendBorderColor #999999
+
+title TallerAuto - Diagrama de casos de uso
+
+actor "Administrador\ndel Taller" as ADM
+actor "Mecánico" as MEC
+actor "Cliente" as CLI
+ADM -[hidden]right- MEC
+
+rectangle "Frontera del sistema: TallerAuto" as SYS {
+  usecase "CU-13\nRegistrar Ingreso\nde Insumos" as CU13
+  usecase "CU-10\nRegistrar Aprobación\nde Presupuesto" as CU10
+  usecase "CU-12\nRegistrar Cobro Final" as CU12
+  together {
+    usecase "CU-04\nAgendar Cita de\nMantenimiento" as CU04
+    usecase "CU-07\nRegistrar Llegada de\nVehículo sin Cita" as CU07
+    usecase "CU-06\nRegistrar Vehículo" as CU06
+    usecase "CU-01\nConsultar Historial\nVehicular por Placa" as CU01
+  }
+  usecase "CU-11\nRegistrar Servicio y\nCerrar Orden de Trabajo" as CU11
+  usecase "CU-09\nConsultar Estado\nde Vehículo" as CU09
+  usecase "CU-05\nActualizar Estado\nde Vehículo" as CU05
+  together {
+    usecase "CU-02\nRegistrar Orden de Trabajo\ncon Presupuesto" as CU02
+    usecase "CU-08\nConsultar Existencia\nde Insumo" as CU08
+    usecase "CU-03\nAsociar Insumo a\nOrden de Trabajo" as CU03
+  }
+}
+
+' ---- orden vertical (oculto) ----
+CU13 -[hidden]right- CU10
+CU10 -[hidden]right- CU12
+CU12 -[hidden]right- CU04
+CU04 -[hidden]right- CU07
+CU07 -[hidden]right- CU06
+CU06 -[hidden]right- CU01
+CU01 -[hidden]right- CU11
+CU11 -[hidden]right- CU09
+CU09 -[hidden]right- CU05
+CU05 -[hidden]right- CU02
+CU02 -[hidden]right- CU08
+CU08 -[hidden]right- CU03
+
+' ---- relaciones entre casos de uso ----
+CU02 .right.> CU08 : <<include>>
+CU03 .left.> CU08 : <<include>>
+CU06 .right.> CU01 : <<extend>>
+CU06 .left.> CU07 : <<extend>>
+CU07 .left.> CU04 : <<extend>>
+CU06 .left.> CU04 : <<extend>>
+
+' ---- actores primarios (izquierda) ----
+ADM -down- CU01
+ADM -down- CU02
+ADM -down- CU03
+ADM -down- CU04
+ADM -down- CU05
+ADM -down- CU06
+ADM -down- CU07
+ADM -down- CU08
+ADM -down- CU09
+ADM -down- CU10
+ADM -down- CU11
+ADM -down- CU12
+ADM -down- CU13
+
+MEC -down- CU01
+MEC -down- CU02
+MEC -down- CU05
+MEC -down- CU06
+MEC -down- CU08
+MEC -down- CU09
+MEC -down- CU11
+
+' ---- actores secundarios (flecha hacia el actor) ----
+CU03 -up-> MEC
+CU01 -down-> CLI
+CU02 -down-> CLI
+CU04 -down-> CLI
+CU05 -down-> CLI
+CU06 -down-> CLI
+CU07 -down-> CLI
+CU09 -down-> CLI
+CU10 -down-> CLI
+CU12 -down-> CLI
+
+legend bottom right
+  **Notación**
+  Actor primario: línea simple (opera el sistema)
+  Actor secundario: línea con flecha hacia el actor
+  El Mecánico es actor secundario únicamente en CU-03
+  «extend»: el origen extiende al destino
+  «include»: el origen incluye al destino
+endlegend
+@enduml

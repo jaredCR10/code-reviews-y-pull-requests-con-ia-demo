@@ -1,0 +1,32 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Agendar cita de mantenimiento (CU-04)</b>
+==
+{
+  Fecha | "lunes 21/09/2026   " | [Ver disponibilidad]
+}
+<b>Disponibilidad de rampas</b>
+{#
+  Franja | Rampa 1 | Rampa 2
+  8:00 a. m. | Libre | Ocupada
+  10:00 a. m. | Libre | Libre
+  1:00 p. m. | Ocupada | Libre
+  3:00 p. m. | Libre | Libre
+}
+{
+  Rampa | ^Rampa 1^ | Franja | ^8:00 a. m.^
+  Placa del vehículo | "CL-8942       " | Servicio | "Cambio de frenos     "
+}
+{
+  [Agendar cita] | [Registrar llegada sin cita] | [Cancelar]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  La rampa no está disponible en esa franja. Seleccione otra rampa u otra franja libre.
+FA-02:  La placa no está registrada. Se abre el registro del vehículo (CU-06).
+FA-03:  [Registrar llegada sin cita] abre CU-07.
+}
+}
+@endsalt

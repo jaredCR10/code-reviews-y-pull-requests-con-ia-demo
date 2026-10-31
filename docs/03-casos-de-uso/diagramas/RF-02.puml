@@ -1,0 +1,45 @@
+@startuml rf-02-presupuesto-y-cobro
+' Generado por generar_diagramas_cu.py a partir de la matriz 7.0.2. No editar a mano.
+left to right direction
+skinparam shadowing false
+skinparam dpi 130
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam nodesep 20
+skinparam ranksep 120
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #222222
+skinparam ActorBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #1F3A5F
+skinparam UsecaseFontSize 11
+skinparam RectangleBorderColor #1F3A5F
+skinparam RectangleBackgroundColor #FFFFFF
+
+title RF-02 Presupuesto y cobro\nCasos de uso: CU-02, CU-10, CU-12
+
+actor "Administrador\ndel Taller" as ADM
+actor "Mecánico" as MEC
+actor "Cliente" as CLI
+ADM -[hidden]right- MEC
+rectangle "Frontera del sistema: TallerAuto" as SYS {
+  usecase "CU-08\nConsultar Existencia\nde Insumo" as CU08 #EDEDED
+  usecase "CU-02\nRegistrar Orden de Trabajo\ncon Presupuesto" as CU02 #FFE9A8
+  usecase "CU-10\nRegistrar Aprobación\nde Presupuesto" as CU10 #FFE9A8
+  usecase "CU-12\nRegistrar Cobro Final" as CU12 #FFE9A8
+}
+
+CU08 -[hidden]right- CU02
+CU02 -[hidden]right- CU10
+CU10 -[hidden]right- CU12
+
+ADM -down- CU02
+MEC -down- CU02
+CU02 -down-> CLI
+ADM -down- CU10
+CU10 -down-> CLI
+ADM -down- CU12
+CU12 -down-> CLI
+
+CU02 .left.> CU08 : <<include>>
+@enduml

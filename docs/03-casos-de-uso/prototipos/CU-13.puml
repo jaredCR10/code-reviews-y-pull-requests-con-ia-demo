@@ -1,0 +1,29 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar ingreso de insumos (CU-13)</b>
+==
+{
+  Nombre o código del insumo | "Aceite 10W-30      " | [Buscar]
+}
+{
+  Existencia actual: 8
+  Cantidad recibida | "12   " | [Agregar]
+}
+--
+<b>Ingresos de esta sesión</b>
+{#
+  Insumo | Cantidad recibida | Nueva existencia
+  Aceite 10W-30 | 12 | 20
+}
+{
+  [Finalizar ingreso]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  Insumo no encontrado en el catálogo.
+FA-02:  La cantidad debe ser un número entero mayor que cero.
+}
+}
+@endsalt

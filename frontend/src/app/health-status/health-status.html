@@ -1,0 +1,15 @@
+@let s = state();
+@switch (s.status) {
+  @case ('loading') {
+    <p class="health-status health-status--loading">Consultando backend...</p>
+  }
+  @case ('success') {
+    <p class="health-status health-status--ok">
+      Backend: <strong>{{ s.data.status }}</strong>
+      ({{ s.data.service }})
+    </p>
+  }
+  @case ('error') {
+    <p class="health-status health-status--error">{{ s.message }}</p>
+  }
+}

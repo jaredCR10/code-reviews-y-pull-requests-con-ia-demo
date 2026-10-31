@@ -1,0 +1,26 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Consultar existencia de insumo (CU-08)</b>
+==
+{
+  Nombre o código del insumo | "Aceite 10W-30      " | [Consultar]
+}
+--
+{#
+  Insumo | Precio unitario | Existencia
+  Aceite 10W-30 | ₡9 500 | 10
+}
+<b>Ejemplo con existencia cero</b>
+{#
+  Insumo | Precio unitario | Existencia
+  Filtro de Aire | ₡6 000 | 0   <b>ALERTA: existencia cero</b>
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  El insumo se muestra con una alerta de existencia cero.
+FA-02:  Insumo no encontrado en el catálogo.
+}
+}
+@endsalt

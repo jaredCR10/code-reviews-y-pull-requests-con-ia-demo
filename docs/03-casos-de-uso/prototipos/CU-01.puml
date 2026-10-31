@@ -1,0 +1,37 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Consultar historial vehicular (CU-01)</b>
+==
+{
+  Placa | "CL-8942          " | [Buscar]
+}
+--
+<b>Vehículo</b>
+{
+  Marca: Toyota | Modelo: Corolla | Año: 2015 | Propietario: Carlos Mora
+}
+<b>Historial de órdenes de trabajo (más reciente primero)</b>
+{#
+  Fecha | Orden | Diagnóstico | Estado
+  12/07/2026 | 087 | Cambio de pastillas de freno | Cerrada
+  03/03/2026 | 052 | Cambio de aceite y filtro | Cerrada
+}
+<b>Detalle de la orden seleccionada (087)</b>
+{
+  Fallas reportadas: | Ruido al frenar
+  Diagnóstico: | Pastillas delanteras desgastadas
+}
+{#
+  Insumo utilizado | Cantidad | Garantía
+  Pastillas de freno delanteras | 1 juego | 6 meses
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  La placa no se encuentra registrada.   [Registrar vehículo]  [No registrar]
+FA-02:  Formato de placa inválido. Ingrese una placa de 5 a 7 caracteres alfanuméricos.
+FA-04:  El vehículo no tiene servicios registrados.
+}
+}
+@endsalt

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_RF03B" targetNamespace="http://bizagi.com/bpmn">
+<bpmn:collaboration id="Collaboration_1">
+<bpmn:participant id="Participant_Mecanico" name="Mecánico (Nacho / Chalo)" processRef="Process_Mecanico_RF03B" />
+</bpmn:collaboration>
+<bpmn:process id="Process_Mecanico_RF03B" name="Mecánico (Nacho / Chalo)" isExecutable="false">
+<bpmn:startEvent id="M0" name="Orden de reparación asignada"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+<bpmn:manualTask id="M1" name="Subir el vehículo a la rampa asumiendo repuesto disponible"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:manualTask>
+<bpmn:manualTask id="M2" name="Iniciar el desarme para cambiar el repuesto"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:manualTask>
+<bpmn:exclusiveGateway id="M3" name="¿Hay unidades disponibles del repuesto en el estante?"><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_Si</bpmn:outgoing><bpmn:outgoing>Flow_No</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:manualTask id="M4a" name="Detener el trabajo técnico"><bpmn:incoming>Flow_No</bpmn:incoming><bpmn:outgoing>Flow_4</bpmn:outgoing></bpmn:manualTask>
+<bpmn:manualTask id="M4b" name="Comprar el repuesto de emergencia en la repuestera local"><bpmn:incoming>Flow_4</bpmn:incoming><bpmn:outgoing>Flow_5</bpmn:outgoing></bpmn:manualTask>
+<bpmn:exclusiveGateway id="M5" name=""><bpmn:incoming>Flow_Si</bpmn:incoming><bpmn:incoming>Flow_5</bpmn:incoming><bpmn:outgoing>Flow_6</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:manualTask id="M6" name="Continuar la reparación con el repuesto disponible"><bpmn:incoming>Flow_6</bpmn:incoming><bpmn:outgoing>Flow_7</bpmn:outgoing></bpmn:manualTask>
+<bpmn:endEvent id="M7" name="Reparación completada"><bpmn:incoming>Flow_7</bpmn:incoming></bpmn:endEvent>
+<bpmn:sequenceFlow id="Flow_1" sourceRef="M0" targetRef="M1" />
+<bpmn:sequenceFlow id="Flow_2" sourceRef="M1" targetRef="M2" />
+<bpmn:sequenceFlow id="Flow_3" sourceRef="M2" targetRef="M3" />
+<bpmn:sequenceFlow id="Flow_Si" sourceRef="M3" targetRef="M5" name="Sí" />
+<bpmn:sequenceFlow id="Flow_No" sourceRef="M3" targetRef="M4a" name="No" />
+<bpmn:sequenceFlow id="Flow_4" sourceRef="M4a" targetRef="M4b" />
+<bpmn:sequenceFlow id="Flow_5" sourceRef="M4b" targetRef="M5" />
+<bpmn:sequenceFlow id="Flow_6" sourceRef="M5" targetRef="M6" />
+<bpmn:sequenceFlow id="Flow_7" sourceRef="M6" targetRef="M7" />
+</bpmn:process>
+<bpmndi:BPMNDiagram id="BPMNDiagram_1">
+<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+<bpmndi:BPMNShape id="Participant_Mecanico_di" bpmnElement="Participant_Mecanico" isHorizontal="true"><omgdc:Bounds x="60" y="40" width="1756" height="260" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M0_di" bpmnElement="M0"><omgdc:Bounds x="180" y="152" width="36" height="36" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M1_di" bpmnElement="M1"><omgdc:Bounds x="370" y="130" width="100" height="80" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M2_di" bpmnElement="M2"><omgdc:Bounds x="560" y="130" width="100" height="80" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M3_di" bpmnElement="M3"><omgdc:Bounds x="750" y="145" width="50" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M4a_di" bpmnElement="M4a"><omgdc:Bounds x="940" y="50" width="100" height="80" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M4b_di" bpmnElement="M4b"><omgdc:Bounds x="1130" y="50" width="100" height="80" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M5_di" bpmnElement="M5"><omgdc:Bounds x="1320" y="145" width="50" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M6_di" bpmnElement="M6"><omgdc:Bounds x="1510" y="130" width="100" height="80" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M7_di" bpmnElement="M7"><omgdc:Bounds x="1700" y="152" width="36" height="36" /></bpmndi:BPMNShape>
+<bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><omgdi:waypoint x="216" y="170.0" /><omgdi:waypoint x="370" y="170.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><omgdi:waypoint x="470" y="170.0" /><omgdi:waypoint x="560" y="170.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><omgdi:waypoint x="660" y="170.0" /><omgdi:waypoint x="750" y="170.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_Si_di" bpmnElement="Flow_Si"><omgdi:waypoint x="800" y="170.0" /><omgdi:waypoint x="1320" y="170.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_No_di" bpmnElement="Flow_No"><omgdi:waypoint x="775.0" y="145" /><omgdi:waypoint x="775.0" y="90.0" /><omgdi:waypoint x="940" y="90.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><omgdi:waypoint x="1040" y="90.0" /><omgdi:waypoint x="1130" y="90.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><omgdi:waypoint x="1180.0" y="130" /><omgdi:waypoint x="1180.0" y="170.0" /><omgdi:waypoint x="1320" y="170.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><omgdi:waypoint x="1370" y="170.0" /><omgdi:waypoint x="1510" y="170.0" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><omgdi:waypoint x="1610" y="170.0" /><omgdi:waypoint x="1700" y="170.0" /></bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane>
+</bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,39 @@
+@startuml rf-05-estado-del-vehiculo
+' Generado por generar_diagramas_cu.py a partir de la matriz 7.0.2. No editar a mano.
+left to right direction
+skinparam shadowing false
+skinparam dpi 130
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam nodesep 20
+skinparam ranksep 120
+skinparam ArrowColor #444444
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #222222
+skinparam ActorBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #1F3A5F
+skinparam UsecaseFontSize 11
+skinparam RectangleBorderColor #1F3A5F
+skinparam RectangleBackgroundColor #FFFFFF
+
+title RF-05 Estado del vehículo\nCasos de uso: CU-05, CU-09
+
+actor "Administrador\ndel Taller" as ADM
+actor "Mecánico" as MEC
+actor "Cliente" as CLI
+ADM -[hidden]right- MEC
+rectangle "Frontera del sistema: TallerAuto" as SYS {
+  usecase "CU-05\nActualizar Estado\nde Vehículo" as CU05 #FFE9A8
+  usecase "CU-09\nConsultar Estado\nde Vehículo" as CU09 #FFE9A8
+}
+
+CU05 -[hidden]right- CU09
+
+ADM -down- CU05
+MEC -down- CU05
+CU05 -down-> CLI
+ADM -down- CU09
+MEC -down- CU09
+CU09 -down-> CLI
+
+@enduml

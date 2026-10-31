@@ -1,0 +1,15 @@
+# Configuración exclusiva de pruebas: base de datos H2 en memoria.
+# Permite que el contexto de Spring arranque en el build sin necesidad de MySQL
+# ni docker. En las pruebas, Hibernate crea el esquema a partir de las entidades
+# y Liquibase queda desactivado.
+spring:
+  datasource:
+    url: jdbc:h2:mem:tallerauto;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  liquibase:
+    enabled: false

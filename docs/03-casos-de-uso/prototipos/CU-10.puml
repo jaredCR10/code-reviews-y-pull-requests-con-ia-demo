@@ -1,0 +1,27 @@
+@startsalt
+scale 2.5
+{+
+<b>TallerAuto  ·  Registrar aprobación de presupuesto (CU-10)</b>
+==
+{
+  Orden de trabajo | ^103 - Esperando Aprobación^ | [Seleccionar]
+}
+--
+<b>Presupuesto de la orden 103</b>
+{#
+  Concepto | Detalle | Monto
+  Insumos | Filtro de Aceite x 1 | ₡8 000
+  Mano de obra | 1 hora | ₡12 000
+  <b>Total</b> | . | <b>₡20 000</b>
+}
+{
+  [Registrar aprobación del cliente] | [Registrar rechazo del cliente]
+}
+--
+{+
+<b>Mensajes del sistema (según los flujos alternativos)</b>
+FA-01:  [Registrar rechazo del cliente] deja la orden en estado Rechazada con su fecha.
+FA-02:  La orden no existe o no está pendiente de aprobación.
+}
+}
+@endsalt
