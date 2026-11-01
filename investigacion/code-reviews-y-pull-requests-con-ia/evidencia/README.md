@@ -9,6 +9,10 @@ Repositorio: https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-de
 | 03 | [03-pr2-coderabbit-resumen-sin-comentarios.png](03-pr2-coderabbit-resumen-sin-comentarios.png) | PR #2: CodeRabbit revisa automáticamente, resume el cambio, lo relaciona con el PR #1 y no deja comentarios | 6.3, paso 8 |
 | 04 | [04-pr2-checks-en-verde.png](04-pr2-checks-en-verde.png) | PR #2: los 3 checks en verde (CI backend, CI frontend y CodeRabbit) y revisión humana solicitada a otro integrante | 6.3, pasos 8 y 9 |
 | 05 | [05-push-directo-rechazado.png](05-push-directo-rechazado.png) | Push directo a `main` rechazado por el ruleset (`GH013`): exige PR y los 2 checks obligatorios | 5 y 6.3, paso 10 |
+| 06 | [06-pr1-coderabbit-comentario-aceptado.png](06-pr1-coderabbit-comentario-aceptado.png) | PR #1: CodeRabbit pide corregir la prueba del frontend y el ingeniero lo acepta para un PR aparte | 6.3, paso 5 |
+| 07 | [07-pr1-aprobacion-humana.png](07-pr1-aprobacion-humana.png) | PR #1: otro integrante (Jose01R) deja su comentario de revisión y aprueba | 6.3, paso 6 |
+| 08 | [08-pr2-aprobacion-humana.png](08-pr2-aprobacion-humana.png) | PR #2: Jose01R aprueba el cambio | 6.3, paso 9 |
+| 09 | [09-ruleset-main-activo.png](09-ruleset-main-activo.png) | Settings → Rulesets: la regla `main` está activa, con 4 reglas sobre 1 rama | 5 y 6.3, paso 10 |
 
 ## Ejecuciones del CI
 
