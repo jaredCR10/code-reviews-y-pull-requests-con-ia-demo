@@ -43,7 +43,7 @@ El objetivo no fue comparar herramientas, sino armar un flujo donde cada una cum
 - **Tipo:** integración continua (CI).
 - **Papel:** compila, ejecuta pruebas y verifica estándares en cada PR. Sus resultados son los *status checks* obligatorios (detalle en la sección 5).
 - **Modalidad:** minutos ilimitados en repositorios públicos.
-- **Limitaciones:** advierte que las acciones `checkout@v4` y `setup-node@v4` usan Node 20, que está obsoleto en los *runners*.
+- **Limitaciones:** los registros advierten que `checkout@v4`, `setup-node@v4` y `setup-java@v4` usan Node 20, que está obsoleto en los *runners*, y que `setup-java@v4` ya no recibirá actualizaciones (se recomienda migrar a `setup-java@v5`).
 
 ### 4.3 Checkstyle y Vitest
 - **Tipo:** análisis estático (Checkstyle, para Java) y pruebas unitarias (Vitest, para Angular).
@@ -54,7 +54,7 @@ El objetivo no fue comparar herramientas, sino armar un flujo donde cada una cum
 ### 4.4 CodeRabbit
 - **Tipo:** revisor automático con IA.
 - **Papel:** resume el PR, deja comentarios línea por línea y responde cuando se le menciona con `@coderabbitai`. Recibe como contexto los lineamientos de diseño del proyecto.
-- **Modalidad:** plan gratuito para repositorios públicos (open source), con una cuota de 10 revisiones por hora.
+- **Modalidad:** acceso gratuito para proyectos open source (repositorios públicos). En la información de la revisión aparece como plan *Advanced*. Durante la prueba, el límite observado fue de 10 revisiones por hora; según la documentación, ese límite varía en los proyectos open source, y el plan *Free* para repositorios privados solo genera resúmenes de PR.
 - **Limitaciones:** no revisó automáticamente un PR que ya estaba abierto antes de instalarlo, y su aviso señalaba otra causa. Marcó como "Major" un comentario que era una preferencia, no un error.
 
 ### 4.5 Claude (asistente de apoyo)
@@ -62,7 +62,7 @@ El objetivo no fue comparar herramientas, sino armar un flujo donde cada una cum
 - **Papel:** se usó para **preparar** la infraestructura (redactar el workflow y la configuración, y abrir los PRs de configuración). **No forma parte del flujo demostrado**, que se puede reproducir sin él.
 - **Limitaciones:** cometió un error de configuración (el alcance de los lineamientos en CodeRabbit) que luego detectó el revisor de IA (ver 6.3, paso 5).
 
-**Por qué un repositorio aparte.** Se trabajó sobre una copia pública del proyecto del curso (TallerAuto), en el repositorio `code-reviews-y-pull-requests-con-ia-demo`. Así se usa código real sin afectar el repositorio del curso, que es privado y pertenece a la organización del curso. Además, el plan gratuito de CodeRabbit solo hace revisiones completas en repositorios públicos.
+**Por qué un repositorio aparte.** Se trabajó sobre una copia pública del proyecto del curso (TallerAuto), en el repositorio `code-reviews-y-pull-requests-con-ia-demo`. Así se usa código real sin afectar el repositorio del curso, que es privado y pertenece a la organización del curso. Además, CodeRabbit solo hace revisiones completas gratuitas en repositorios públicos (acceso open source).
 
 ## 5. Participación del CI/CD en la revisión
 <!-- Responsable: Jared Morales -->
@@ -77,13 +77,13 @@ En este flujo el CI funciona como un **revisor automático que no opina, sino qu
 | `frontend` | Compilación | `npm run build` |
 | `frontend` | Pruebas (Vitest) | `npm test -- --watch=false` |
 
-**Reglas que bloquean la integración.** En `main` se configuró un *ruleset* de GitHub con estas reglas:
+**Reglas que bloquean la integración.** En `main` se configuró un *ruleset* de GitHub con 4 reglas (la primera tiene dos opciones):
 
 | Regla | Efecto |
 |---|---|
-| Exigir pull request | Nadie puede hacer push directo a `main`, ni siquiera el administrador |
-| 1 aprobación | Otra persona, distinta del autor, debe aprobar |
-| Descartar aprobaciones viejas | Si el autor sube commits después de una aprobación, esta se anula y hay que revisar de nuevo. Evita que entre código que nadie leyó |
+| Exigir pull request | Nadie puede hacer push directo a `main`, ni siquiera el administrador. Incluye dos opciones: |
+| ↳ *opción:* 1 aprobación | Otra persona, distinta del autor, debe aprobar |
+| ↳ *opción:* descartar aprobaciones viejas | Si el autor sube commits después de una aprobación, esta se anula y hay que revisar de nuevo. Evita que entre código que nadie leyó |
 | *Status checks* obligatorios: `backend` y `frontend` | No se puede hacer merge si alguno falla |
 | Bloquear borrado y *force push* | Protege el historial de `main` |
 
@@ -159,7 +159,7 @@ Las capturas citadas como *(Evidencia NN)* están en [`evidencia/`](evidencia/RE
    | Comentario de la IA | Verificación del ingeniero | Decisión |
    |---|---|---|
    | Configurar `auto_pause_after_reviewed_commits: 0` para que nunca pause las revisiones ([enlace](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/1#discussion_r4437184345)) | Es cierto según la documentación, pero la misma documentación advierte que gasta la cuota más rápido. Nuestros PRs tienen pocos commits | **Descartado** con justificación. La IA respondió que retiraba la recomendación y marcó la conversación como resuelta *(Evidencia 02)* |
-   | Los lineamientos de `docs/` no se aplican al código de `backend/` y `frontend/` ([enlace](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/1#discussion_r4437184352)) | Correcto: la documentación indica que un archivo de lineamientos solo aplica a su propia carpeta. El error venía de la configuración preparada con ayuda de Claude | **Aceptado**, corregido en el mismo PR (commit [`c19c365`](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/commit/c19c365)) |
+   | Los lineamientos de `docs/` no se aplican al código de `backend/` y `frontend/` ([enlace](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/1#discussion_r4437184352)) | Correcto: según la documentación, por defecto un archivo de lineamientos solo aplica a su propia carpeta; para usarlo en otras rutas hay que indicarlas con `applyTo`. El error venía de la configuración preparada con ayuda de Claude | **Aceptado**, corregido en el mismo PR (commit [`c19c365`](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/commit/c19c365)) |
    | Corregir la prueba del frontend ([enlace](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/1#discussion_r4437184358)) | Correcto, coincide con lo que detectó el CI | **Aceptado**, pero en un PR aparte para mantener cada PR con un solo propósito *(Evidencia 06)* |
 
 6. **Revisión humana y merge (15:25).** Otro integrante (Jose01R) aprobó el PR y se hizo el merge. Todavía no había protección de rama, por eso se pudo integrar con el job `frontend` en rojo. La decisión quedó documentada en el PR. *(Evidencia 07)*
@@ -167,7 +167,7 @@ Las capturas citadas como *(Evidencia NN)* están en [`evidencia/`](evidencia/RE
 **PR #2: corregir la prueba** ([enlace](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/2)), rama `fix/prueba-titulo-app`.
 
 7. **Apertura (15:26).** Cambio de una sola línea en `app.spec.ts`.
-8. **Todo en verde.** `backend` y `frontend` pasaron ([ejecución](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/actions/runs/41352052900)). Esta vez CodeRabbit revisó automáticamente y no dejó comentarios. *(Evidencias 03 y 04)*
+8. **Todo en verde.** `backend` y `frontend` pasaron ([ejecución](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/actions/runs/41352052900)). Esta vez CodeRabbit revisó automáticamente: publicó su resumen, pero no dejó comentarios accionables. *(Evidencias 03 y 04)*
 9. **Aprobación y merge (15:50).** Aprobado por Jose01R. *(Evidencia 08)*
 
 **Activación de la protección.**
