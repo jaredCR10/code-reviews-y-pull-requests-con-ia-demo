@@ -39,11 +39,19 @@ reviews:
         - core/ y models/ nunca importan de features/.
         - Señalar suscripciones a Observables que no se liberan.
 
+# Lineamientos del equipo como criterio de revisión.
+# "applyTo" es necesario porque un archivo de lineamientos solo aplica a su propia
+# carpeta; sin él, los documentos de docs/ no se usarían al revisar backend/ ni frontend/.
 knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:
-      - "docs/05-diseno/lineamientos-*.md"
+      - files: "docs/05-diseno/lineamientos-backend.md"
+        applyTo: "backend/**"
+      - files: "docs/05-diseno/lineamientos-base-de-datos.md"
+        applyTo: "backend/**"
+      - files: "docs/05-diseno/lineamientos-frontend.md"
+        applyTo: "frontend/**"
 
 chat:
   auto_reply: true # Responde cuando se le menciona con @coderabbitai
