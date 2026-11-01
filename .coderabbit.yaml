@@ -1,0 +1,57 @@
+# Configuración del revisor de IA (CodeRabbit)
+# Documentación: https://docs.coderabbit.ai/reference/configuration
+
+language: "es-ES" # Comentarios y resúmenes en español
+
+reviews:
+  profile: "chill" # "assertive" genera más comentarios (y más falsos positivos)
+  request_changes_workflow: false # La IA comenta, pero NUNCA aprueba ni bloquea: eso lo hace un humano
+  high_level_summary: true # Resumen automático del PR
+  review_status: true
+  collapse_walkthrough: false
+  poem: false
+  auto_review:
+    enabled: true # Revisa automáticamente al abrir el PR y en cada push
+    drafts: false # No revisa PRs en borrador
+
+  # Contexto del proyecto, tomado de docs/05-diseno/lineamientos-*.md
+  path_instructions:
+    - path: "backend/src/main/java/**/*.java"
+      instructions: |
+        Spring Boot con arquitectura en capas: api (controladores y DTO) -> handlers (CQRS) -> persistence.
+        - No existe un paquete "service": la lógica de cada caso de uso vive en su propio handler
+          (handlers.commands si escribe, handlers.queries si lee).
+        - Un controlador NUNCA accede a un repositorio ni a una entidad JPA, y no contiene reglas de negocio.
+          Invoca al handler a través de su interfaz y solo devuelve DTO de api.responses.
+        - La entidad JPA nunca sale de persistence/handlers.
+        - persistence nunca conoce a handlers ni a api.
+        - Señalar credenciales, contraseñas o claves escritas en el código.
+        - Señalar posibles NullPointerException y casos borde sin manejar.
+        - Señalar consultas SQL armadas concatenando texto (riesgo de inyección SQL).
+    - path: "backend/src/test/**"
+      instructions: |
+        Verificar que las pruebas tengan aserciones reales y que no pasen siempre.
+    - path: "frontend/src/**/*.ts"
+      instructions: |
+        Angular con TypeScript estricto.
+        - Está prohibido el tipo "any".
+        - Un componente nunca importa HttpClient ni conoce la URL de un endpoint; usa un service de core/.
+        - core/ y models/ nunca importan de features/.
+        - Señalar suscripciones a Observables que no se liberan.
+
+# Lineamientos del equipo como criterio de revisión.
+# "applyTo" es necesario porque un archivo de lineamientos solo aplica a su propia
+# carpeta; sin él, los documentos de docs/ no se usarían al revisar backend/ ni frontend/.
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - files: "docs/05-diseno/lineamientos-backend.md"
+        applyTo: "backend/**"
+      - files: "docs/05-diseno/lineamientos-base-de-datos.md"
+        applyTo: "backend/**"
+      - files: "docs/05-diseno/lineamientos-frontend.md"
+        applyTo: "frontend/**"
+
+chat:
+  auto_reply: true # Responde cuando se le menciona con @coderabbitai
