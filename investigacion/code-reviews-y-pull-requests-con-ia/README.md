@@ -25,6 +25,11 @@
 | Linter / análisis estático | Herramienta que examina el código sin ejecutarlo para detectar errores, malas prácticas y violaciones de estilo. En esta demostración se usa Checkstyle (Java); el estándar de TypeScript del frontend aún no se verifica (ESLint pendiente, ver sección 4.3). | Checkstyle (2026) |
 | CODEOWNERS | Archivo (`.github/CODEOWNERS`) que define quién es dueño de cada parte del repositorio; GitHub solicita su revisión cuando un PR toca sus archivos. | GitHub, *About code owners* |
 | Code Owner | Persona o equipo responsable de revisar los archivos que le corresponden; con la regla *Require review from Code Owners*, su aprobación es obligatoria. | GitHub, *About code owners* |
+| LLM (modelo grande de lenguaje) | Modelo entrenado con grandes cantidades de texto que predice y genera lenguaje natural; es el motor del revisor de IA, que lo usa para "entender" el *diff* y redactar sus comentarios. | IBM, *What are large language models (LLMs)?* |
+| Agente de IA | Programa que usa un LLM para planear y ejecutar una tarea por su cuenta, encadenando pasos y usando herramientas. Un revisor como CodeRabbit actúa como agente: lee el *diff*, consulta los lineamientos y responde en el hilo. | IBM, *What are AI agents?* |
+| Prompt | Instrucción o entrada que se le da al modelo para obtener una respuesta. En la revisión, el *prompt* combina las reglas configuradas en `.coderabbit.yaml` con el *diff* del PR. | OpenAI, *Prompt engineering* |
+| Contexto (ventana de contexto) | Información que el modelo tiene presente al responder (el *diff*, los lineamientos, el hilo del PR); lo que queda fuera de esa ventana no lo considera. Por eso pasarle los lineamientos como contexto mejora la revisión. | IBM, *What is a context window?* |
+| Alucinación | Respuesta del modelo que suena convincente pero es incorrecta o inventada. En una revisión aparece como un comentario sobre un problema inexistente (falso positivo); es la razón por la que toda sugerencia de la IA debe verificarse. | IBM, *What are AI hallucinations?* |
 | Revisor automático con IA | Herramienta basada en modelos de lenguaje que analiza el *diff* del PR y produce un resumen y comentarios (posibles errores, estilo, riesgos). En esta demostración: CodeRabbit. No sustituye al revisor humano. | CodeRabbit (2026) |
 | Rubber-stamping | Aprobar un PR sin revisarlo de verdad. Es el principal riesgo de calidad que una revisión seria debe evitar. | Google (s. f.); SmartBear (s. f.) |
 | Falso positivo / falso negativo | *Falso positivo*: marcar como problema algo que no lo es. *Falso negativo*: no detectar un problema que sí existe. Ambos importan al evaluar un linter o un revisor de IA. | Perforce (s. f.) |
@@ -252,7 +257,7 @@ El principio que ordena esta sección es simple: **la IA sugiere, el humano deci
 | Estilo y patrones comunes | Los detecta rápido, resume el *diff* y señala posibles errores | Confirma lo relevante |
 | Volumen | Revisa todo el *diff* sin cansarse | Prioriza lo crítico |
 | Regla de negocio | Puede no saber qué espera el caso de uso | Verifica contra el requerimiento real |
-| Arquitectura | No conoce las decisiones de diseño del equipo | Valida la separación por capas |
+| Arquitectura | Conoce las reglas escritas en los lineamientos que se le configuran (`.coderabbit.yaml`, ver sección 4); no conoce las decisiones de diseño no documentadas | Valida la separación por capas |
 | Contexto del proyecto | Limitado a lo que ve en el *diff* | Conoce el sistema completo |
 | Falsos positivos | Los genera | Los descarta justificando |
 | Decisión final y responsabilidad | Solo **sugiere** | **Aprueba y responde** por el *merge* |
@@ -324,6 +329,11 @@ Los comentarios de la IA se tratan como sugerencias de un revisor más, no como 
 - GitHub. (2026). *About status checks*. https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks
 - GitHub. (2026). *GitHub Actions documentation*. https://docs.github.com/en/actions
 - Google. (s. f.). *Code review developer guide: The standard of code review*. https://google.github.io/eng-practices/review/reviewer/standard.html
+- IBM. (s. f.). *What are AI agents?* https://www.ibm.com/think/topics/ai-agents
+- IBM. (s. f.). *What are AI hallucinations?* https://www.ibm.com/think/topics/ai-hallucinations
+- IBM. (s. f.). *What are large language models (LLMs)?* https://www.ibm.com/think/topics/large-language-models
+- IBM. (s. f.). *What is a context window?* https://www.ibm.com/think/topics/context-window
+- OpenAI. (s. f.). *Prompt engineering*. https://platform.openai.com/docs/guides/prompt-engineering
 - OWASP. (s. f.). *Use of hard-coded password (CWE-798)*. https://owasp.org/www-community/vulnerabilities/Use_of_hard-coded_password
 - Perforce. (s. f.). *What are false positives and false negatives?* https://www.perforce.com/blog/qac/what-are-false-positives-and-false-negatives
 - Richards, M. (2015). *Software architecture patterns*. O'Reilly. https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/
