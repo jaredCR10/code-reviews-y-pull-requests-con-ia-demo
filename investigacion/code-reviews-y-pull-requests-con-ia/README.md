@@ -295,21 +295,95 @@ En la demostración se evita con varias barreras combinadas:
 Los comentarios de la IA se tratan como sugerencias de un revisor más, no como verdad. Se puede dialogar con `@coderabbitai` (preguntar o pedir una corrección). La **aceptación o el rechazo** de cada comentario son siempre humanos; el **cierre del hilo** puede hacerlo la persona o la propia herramienta según la acción (por ejemplo, al retirar una sugerencia; ver sección 6.3) (CodeRabbit, 2026). Un falso positivo de la IA se cierra con una respuesta breve que explique por qué no aplica, y queda como evidencia.
 
 ## 9. Hallazgos
-<!-- Responsable: [Nombre 3] · Con evidencia: qué funcionó, qué falló, errores de la IA, riesgos, tiempo -->
+<!-- Responsable: Adrián Barboza Vargas -->
 
-### 9.1 Resultados del PR sembrado
+### 9.1 Diseño del experimento
+
+Para medir qué detecta cada revisor se abrió un PR con errores conocidos de antemano: el [PR #7](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/7), rama `feature/cu13-registrar-ingreso-insumos`. El PR implementa un caso de uso real del proyecto, **CU-13 Registrar Ingreso de Insumos** (RF-03), con controlador, DTO, *handler* CQRS y pruebas. En él se plantaron seis defectos, uno por cada categoría del plan. La lista de defectos se guardó aparte, fuera del repositorio, y no se compartió con el revisor humano.
+
+Para no sesgar la medición:
+- el código no tiene comentarios que delaten los errores;
+- la descripción del PR sigue la plantilla con un texto realista;
+- los criterios de aceptación remiten al caso de uso sin repetir sus reglas, porque CodeRabbit también lee la descripción.
+
+| # | Defecto plantado | Dónde |
+|---|---|---|
+| 1 | Violación de estilo: `import java.util.List` sin usar | `InsumoController.java`, línea 9 |
+| 2 | Prueba que falla: la prueba espera "mayor **que** cero" y el *handler* devuelve "mayor **a** cero" | `RegistrarIngresoInsumoHandlerImplTest` |
+| 3 | Credencial quemada: token de administrador escrito en el código | `InsumoController.java`, línea 25 |
+| 4 | Caso borde / *null*: `Integer cantidad` sin `@NotNull`, lo que provoca `NullPointerException` al convertirlo a `int` | `RegistrarIngresoInsumoRequest.java` |
+| 5 | Regla de negocio: `cantidad < 0` acepta 0, pero CU-13 (FA-02, escenario E3) exige un entero mayor que cero | `RegistrarIngresoInsumoHandlerImpl.java`, línea 27 |
+| 6 | Arquitectura en capas: el controlador usa `InsumoRepository` directamente, saltándose la capa de *handlers* | `InsumoController.java`, línea 50 |
+
+### 9.2 Resultados
 
 | Defecto plantado | ¿Lo detectó el CI? | ¿Lo detectó la IA? | ¿Lo detectó el humano? | Evidencia |
 |---|---|---|---|---|
-| Violación de estilo | | | | |
-| Prueba que falla | | | | |
-| Credencial en el código | | | | |
-| Null pointer / caso borde | | | | |
-| Regla de negocio incumplida | | | | |
-| Violación de arquitectura en capas | | | | |
+| 1. Violación de estilo | **Sí**: Checkstyle, `UnusedImports` (16 s) | Sí (Major), citando el fallo del CI | Sí | p3-01, p3-03, p3-14 |
+| 2. Prueba que falla | **No** en la primera ejecución: el paso de pruebas se omitió porque Checkstyle falló antes. **Sí** en la segunda, después de corregir el #1 (`rechazaUnaCantidadNegativa`, ~40 s después del commit) | Sí (Major), por análisis estático del código, antes que el CI | Sí, y propone la corrección alineada con CU-13 (cambiar el mensaje, no la prueba) | p3-01, p3-04, p3-13, p3-14 |
+| 3. Credencial en el código | No: el CI no tiene escáner de secretos | Sí (Major, Security, CWE-798) | Sí, y agrega que según RS-01 el control de rol va en el paquete `security` | p3-05, p3-15 |
+| 4. Null pointer / caso borde | No | Sí (Minor) | Sí, y propone `@NotNull` y `@Positive` para validar en el borde | p3-06, p3-16 |
+| 5. Regla de negocio incumplida | No | Sí (Minor), pero basándose en el mensaje del código, no en el CU; lo **confirmó la propia IA** al preguntarle (ver 9.3) | **Sí, citando CU-13** | p3-07, p3-16, p3-18 |
+| 6. Violación de arquitectura en capas | No | Sí (Major), citando los lineamientos del proyecto | Sí, y propone un `Result.NoEncontrado` en el *handler* | p3-08, p3-17 |
+
+**Conteo final:** CI 1/6 en la primera ejecución (2/6 contando la segunda) · IA 6/6 · humano 6/6.
+
+Además de los seis defectos, CodeRabbit dejó **dos comentarios extra** (el revisor humano no hizo comentarios fuera de los defectos plantados):
+- **Incrementos concurrentes** (*lost update*), clasificado como Major. Es un riesgo real, pero queda fuera del alcance del caso de uso y del curso. *(p3-09)*
+- **Desbordamiento de `existencia`** con `Integer.MAX_VALUE`, clasificado como Minor. Es un **riesgo técnicamente válido, descartado por estar fuera del alcance del dominio**: la suma de `int` sí puede desbordarse antes de persistir (el `CHECK (existencia >= 0)` de la tabla solo evita guardar el valor negativo), pero exige existencias cercanas a 2 100 millones de unidades, algo irreal en el inventario de un taller. Se descartó con esa justificación en el hilo del PR y CodeRabbit aceptó la decisión. *(p3-10, p3-12)*
+
+**Tiempos** (4/11/2026, hora de Costa Rica):
+
+| Revisor | Momento | Tiempo desde la apertura (00:47:50) |
+|---|---|---|
+| CI | Terminó la primera ejecución (detecta el #1) | ~30 s (backend 16 s, frontend 27 s) |
+| CI | Segunda ejecución, tras corregir el #1 (detecta el #2) | 11 h 32 min después de la apertura; ~40 s después del commit de corrección (12:19:31 → 12:20:11) |
+| IA | Publicó el resumen del PR | 19 s |
+| IA | Publicó 8 comentarios línea por línea | ~5 min 10 s |
+| Humano | Publicó su revisión ("Request changes", 6 comentarios) | 12:49:06, unas 12 h después de la apertura |
+
+### 9.3 Qué funcionó y qué falló
+
+**Lo que funcionó**
+- **El CI** fue rápido y determinista. El primer defecto que encontró (#1) bloqueó el *merge* sin intervención humana.
+- **La IA** comentó los seis defectos, con explicación y propuesta de corrección. Clasificó el token quemado como vulnerabilidad (CWE-798) y citó los lineamientos del equipo para la violación de capas. Configurarle esos lineamientos como contexto (`knowledge_base` en `.coderabbit.yaml`) contribuyó: los citó al señalar la violación de capas. No se puede afirmar más, porque no hubo una corrida sin ellos y el mismo archivo le pedía buscar credenciales, `NullPointerException` y violaciones de capas (ver 9.4).
+- **El flujo de aceptar y rechazar** funcionó como se esperaba. La sugerencia del import se verificó contra el resultado del CI y se aceptó con un commit. La del desbordamiento se descartó con una justificación técnica: el riesgo existe, pero queda fuera del alcance del dominio. *(p3-11, p3-12)*
+
+**Lo que falló o hay que matizar**
+- **El CI descubre los defectos en serie.** En el job `backend`, Checkstyle corre antes que las pruebas: como falló el estilo, la prueba rota (#2) ni siquiera se ejecutó. Se comprobó en la práctica: al corregir el #1 (commit `519885d`), la segunda ejecución sí reportó la prueba fallida. *(p3-13)*
+- **La IA no es independiente del CI.** En el defecto #1, CodeRabbit cita como fuente "Pipeline failures": leyó el resultado del CI. Parte de su "detección" es reutilizar lo que ya había encontrado otra herramienta.
+- **La detección del #5 no prueba que la IA conozca la regla de negocio.** La IA no recibió el contenido de los casos de uso como contexto; solo su identificador (CU-13, RF-03) en la descripción del PR, además de los lineamientos. Al preguntarle con `@coderabbitai` en qué se basó, respondió que su justificación fue **el mensaje de validación del código** («mayor a cero»), que no citó CU-13 y que no puede confirmar haberlo consultado. Solo después de la pregunta revisó CU-13 y reconoció que su comentario debió fundamentarse en FA-02 y E3. *(p3-18)* El revisor humano, en cambio, citó CU-13 desde el principio. Es la diferencia más clara del experimento: **los dos llegaron al mismo hallazgo, pero solo el humano lo validó contra el requerimiento**.
+- **El revisor humano aportó más que la detección.** Además de encontrar los seis defectos, propuso correcciones basadas en el diseño del proyecto: el control de rol en el paquete `security` (RS-01), `@Positive` para validar en el borde y un `Result.NoEncontrado` para el flujo alternativo FA-01. Tampoco generó ruido: no hizo comentarios fuera de los defectos plantados.
+- **Severidad poco confiable.** La IA marcó como Major un import sin usar, y como Minor la regla de negocio, que es el error con más impacto funcional.
+
+### 9.4 Errores de la IA y riesgos
+- **Comentario válido pero fuera de alcance:** el desbordamiento de `Integer.MAX_VALUE` es un riesgo técnico real, pero irrelevante para el dominio. No es un falso positivo, porque el error existe; aceptarlo sin evaluar el contexto habría agregado complejidad sin beneficio. Muestra que el revisor humano decide no solo si un comentario es correcto, sino si vale la pena atenderlo.
+- **Ruido:** 2 de 8 comentarios no correspondían a ningún defecto plantado. En PRs grandes, ese ruido aumenta el riesgo de que el revisor deje de leer.
+- **Sesgos a favor de la IA en este experimento:**
+  1. `.coderabbit.yaml` le pide explícitamente buscar credenciales, `NullPointerException` y violaciones de capas (defectos #3, #4 y #6).
+  2. El defecto #5 contenía una pista interna.
+- **Sesgos del revisor humano:**
+  1. José preparó con anticipación una guía de revisión a partir de los lineamientos.
+  2. Revisó unas 12 horas después de la revisión de CodeRabbit, con los comentarios de la IA visibles en el PR, salvo que los ocultara. No se puede descartar que lo hayan influido. Sin embargo, sus comentarios citan fuentes que la IA no citó (CU-13, RS-01) y proponen correcciones distintas.
+- **Riesgo de *rubber-stamping*:** con el CI en rojo y 8 comentarios de la IA bien redactados, es tentador aceptar todo sin verificar. La regla del equipo (verificar antes de aceptar, justificar al rechazar) es la barrera.
 
 ## 10. Conclusiones y recomendaciones para el proyecto del curso
-<!-- Responsable: [Nombre 3] -->
+<!-- Responsable: Adrián Barboza Vargas -->
+
+**Conclusiones**
+1. **Cada revisor cubre un tipo distinto de error, y ninguno basta solo.** En el experimento, la IA y el humano detectaron los seis defectos y el CI uno (dos al corregir el primero), pero no por las mismas razones. El CI es rápido e indiscutible para lo que se puede verificar mecánicamente (estilo y pruebas). La IA aporta en seguridad, casos borde y consistencia con los lineamientos. El humano es el único que puede validar contra el caso de uso y responder por el *merge*.
+2. **La calidad de la revisión de la IA depende del contexto que se le configure.** Los lineamientos configurados en `.coderabbit.yaml` contribuyeron: la IA los citó al señalar la violación de capas. Medir cuánto aportaron exige repetir el experimento sin ellos (recomendación 4).
+3. **Que la IA detecte algo no significa que entienda el negocio.** La IA no recibió el contenido de los casos de uso como contexto, solo su identificador en la descripción del PR, y reconoció que detectó el defecto #5 por el mensaje del código y no por CU-13. El humano lo validó contra el caso de uso. La verificación contra los requerimientos sigue siendo humana.
+4. **La aprobación debe seguir siendo humana.** Un comentario técnicamente válido pero fuera del alcance del dominio, y una escala de severidad discutible, muestran que aceptar las sugerencias de la IA sin evaluarlas introduce cambios innecesarios.
+5. **Conversar con la IA sirve para auditarla.** Preguntarle a `@coderabbitai` en qué se basó reveló el origen real de su comentario. Esa pregunta debería ser parte del flujo cuando un comentario de la IA toca reglas de negocio.
+
+**Recomendaciones para TallerAuto**
+1. **Adoptar el flujo completo en el repositorio del curso:** PR con plantilla, CI obligatorio, *ruleset* en `main` y aprobación humana. Todo funciona en el plan gratuito con repositorio público. Si el repositorio sigue privado, CodeRabbit solo genera resúmenes, así que la IA perdería la revisión línea por línea.
+2. **Mostrar todos los fallos del CI en una sola ejecución:** agregar `if: ${{ !cancelled() }}` al paso de pruebas, para que el autor vea juntos los errores de estilo y los de pruebas.
+3. **Agregar ESLint al frontend y un escáner de secretos** (por ejemplo, GitHub *secret scanning* o Gitleaks en el workflow). Así el CI cubriría el estilo de TypeScript y las credenciales quemadas sin depender de la IA.
+4. **Darle a la IA los casos de uso como contexto,** además de los lineamientos (`knowledge_base` con `docs/03-casos-de-uso/**`), y medir de nuevo si detecta reglas de negocio sin pistas en el código.
+5. **Alinear los lineamientos con Checkstyle:** los lineamientos dicen 120 caracteres por línea y prohíben los números mágicos, pero Checkstyle permite 140 y no tiene la regla `MagicNumber`.
+6. **Mantener la regla de revisión:** el revisor humano lee el *diff* y valida contra el CU antes de mirar los comentarios de la IA, y cada sugerencia de la IA se acepta solo después de verificarla o se rechaza con justificación en el hilo.
 
 ## 11. Referencias
 <!-- Todos · Formato consistente (APA) -->
