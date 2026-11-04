@@ -1,0 +1,17 @@
+# CODEOWNERS de TallerAuto
+#
+# Define quién es dueño del código para la regla "Require review from Code
+# Owners" de la protección de rama en main. Cuando se abre un PR, GitHub pide
+# automáticamente la revisión de los dueños de los archivos tocados.
+#
+# El último patrón que coincide con un archivo gana. Para que la regla se haga
+# cumplir, cada persona listada debe ser colaboradora del repo con acceso de
+# escritura.
+#
+# Equipo (curso IF-6100 - Análisis y Diseño de Software):
+#   @jaredCR10       Jared Morales Morales   (C4H714)
+#   @Jose01R         José Andrés Ramírez     (C4I788)
+#   @AdrianBarbozaV  Adrián Barboza Vargas    (C20979)
+
+# Por defecto: los tres integrantes son dueños de todo el repositorio.
+* @jaredCR10 @Jose01R @AdrianBarbozaV
