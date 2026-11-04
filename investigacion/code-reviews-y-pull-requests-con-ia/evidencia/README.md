@@ -24,13 +24,32 @@ Repositorio: https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-de
 | P3-09 | [p3-09-ia-extra-concurrencia.jpg](p3-09-ia-extra-concurrencia.jpg) | Comentario extra: incrementos concurrentes (riesgo real, fuera de alcance) | 9.2 |
 | P3-10 | [p3-10-ia-extra-desbordamiento.jpg](p3-10-ia-extra-desbordamiento.jpg) | Comentario extra: desbordamiento con `Integer.MAX_VALUE` | 9.2 y 9.4 |
 | P3-11 | [p3-11-sugerencia-ia-aceptada-y-commit.jpg](p3-11-sugerencia-ia-aceptada-y-commit.jpg) | Sugerencia del import verificada y aceptada con el commit `519885d` | 9.3 |
-| P3-12 | [p3-12-ia-falso-positivo-rechazado.jpg](p3-12-ia-falso-positivo-rechazado.jpg) | Falso positivo rechazado con justificación; CodeRabbit acepta la decisión | 9.2 y 9.4 |
+| P3-12 | [p3-12-ia-falso-positivo-rechazado.jpg](p3-12-ia-falso-positivo-rechazado.jpg) | Comentario del desbordamiento descartado con justificación (riesgo técnicamente válido, fuera del alcance del dominio); CodeRabbit acepta la decisión | 9.2 y 9.4 |
 | P3-13 | [p3-13-ci-segunda-ejecucion-detecta-prueba-fallida.jpg](p3-13-ci-segunda-ejecucion-detecta-prueba-fallida.jpg) | PR #7, 2.ª ejecución del CI: pasa Checkstyle y falla la prueba `rechazaUnaCantidadNegativa` | 9.2 y 9.3 (defecto 2) |
 | P3-14 | [p3-14-humano-revision-resumen-cambios-solicitados.jpg](p3-14-humano-revision-resumen-cambios-solicitados.jpg) | PR #7: el revisor humano (José) solicita cambios y resume lo encontrado | 9.2 |
 | P3-15 | [p3-15-humano-token-quemado-rs01.jpg](p3-15-humano-token-quemado-rs01.jpg) | El revisor humano señala el token quemado y cita RS-01 (control de rol en `security`) | 9.2 (defecto 3) |
 | P3-16 | [p3-16-humano-null-y-cantidad-cero-cu13.jpg](p3-16-humano-null-y-cantidad-cero-cu13.jpg) | El revisor humano señala el `null` (propone `@NotNull` y `@Positive`) y la cantidad cero, citando CU-13 | 9.2 y 9.3 (defectos 4 y 5) |
 | P3-17 | [p3-17-humano-violacion-de-capas.jpg](p3-17-humano-violacion-de-capas.jpg) | El revisor humano señala la violación de capas y propone `Result.NoEncontrado` | 9.2 (defecto 6) |
 | P3-18 | [p3-18-ia-conversa-fuente-defecto5.jpg](p3-18-ia-conversa-fuente-defecto5.jpg) | Conversación con `@coderabbitai`: la IA reconoce que se basó en el mensaje del código y no en CU-13 | 9.3 |
+
+## Evidencia de Fundamentos (P0 y P1 — José)
+
+Capturas de la sesión de Claude Code (P0), la exploración y guía de revisión (P1) y la revisión del PR #1 de Jared.
+
+| Archivo | Qué muestra | Sección del documento |
+|---|---|---|
+| [cc-p0-01-rama-y-plantilla-pr.png](cc-p0-01-rama-y-plantilla-pr.png) | Sesión de Claude Code: creación de la rama y de la plantilla de PR | 3.2 |
+| [cc-p0-02-codeowners-y-commit.png](cc-p0-02-codeowners-y-commit.png) | Sesión CC: creación de `.github/CODEOWNERS` y commit | 1, 7 |
+| [cc-p0-03-push-y-gh-pr-create.png](cc-p0-03-push-y-gh-pr-create.png) | Sesión CC: push y apertura del PR con `gh pr create` | 6.2 |
+| [cc-p0-04-asignacion-adrian-y-roadmap.png](cc-p0-04-asignacion-adrian-y-roadmap.png) | Sesión CC: asignación del PR a Adrián y actualización del ROADMAP | 7 |
+| [cc-p1-01-estado-prs-ramas.png](cc-p1-01-estado-prs-ramas.png) | Estado de PRs y ramas durante la exploración del proyecto | 6.3 |
+| [cc-p1-02-guia-revision.md](cc-p1-02-guia-revision.md) | Guía ("chuleta") para la revisión humana: capas, reglas de negocio y checklist | 7, 8 |
+| [pr-1-descripcion-coderabbit-resumen.png](pr-1-descripcion-coderabbit-resumen.png) | PR #1: descripción y resumen de CodeRabbit | 4.4, 6.3 |
+| [pr-1-revision-humana-aprobacion.png](pr-1-revision-humana-aprobacion.png) | PR #1: revisión humana y aprobación (José revisó a Jared) | 7, 8 |
+| [pr-3-conversacion-descripcion.png](pr-3-conversacion-descripcion.png) | PR #3: descripción del PR (plantilla + CODEOWNERS) | 3.2 |
+| [pr-3-files-changed.png](pr-3-files-changed.png) | PR #3: archivos cambiados | 3.2 |
+| [pr-3-commits-url.png](pr-3-commits-url.png) | PR #3: commits con su URL | 6.3 |
+| [pr-3-conversacion-coderabbit.png](pr-3-conversacion-coderabbit.png) | PR #3: conversación con CodeRabbit | 4.4 |
 
 ## Ejecuciones del CI
 
