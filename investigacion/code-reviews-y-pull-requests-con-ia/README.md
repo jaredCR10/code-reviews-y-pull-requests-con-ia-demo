@@ -2,7 +2,7 @@
 
 - **Curso:** IF-6100 Análisis y Diseño de Sistemas · II Ciclo 2026
 - **Tema:** 3. Code reviews y pull requests con IA
-- **Integrantes:** [Nombre 1] · Jared Morales Morales · [Nombre 3]
+- **Integrantes:** José Andrés Ramírez · Jared Morales Morales · [Nombre 3]
 - **Repositorio de la demostración:** https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo
 
 ---
@@ -12,21 +12,81 @@
 
 | Término | Definición | Fuente |
 |---|---|---|
-| Pull request | | |
-| Code review | | |
-| Revisor automático con IA | | |
-| CI/CD | | |
-| Branch protection | | |
-| Status check | | |
-| Linter / análisis estático | | |
-| Falso positivo / falso negativo | | |
-| Rubber-stamping | | |
+| Pull request (PR) | Solicitud para incorporar los cambios de una rama en otra (normalmente `main`). Reúne el *diff*, la descripción, la discusión, los *checks* automáticos y las aprobaciones; es el punto donde se decide si el código se integra. | GitHub, *About pull requests* |
+| Code review | Revisión del código de un cambio por una o más personas distintas de quien lo escribió, para detectar errores, mejorar el diseño y compartir conocimiento antes de integrarlo. | Google (s. f.) |
+| Merge | Integración de los cambios de la rama del PR en la rama destino (*merge commit*, *squash* o *rebase*). En esta demostración solo ocurre con los *checks* en verde y aprobación humana. | GitHub, *About pull request merges* |
+| Diff | Diferencias línea por línea entre el código antes y después del cambio; es lo que realmente se revisa en un PR. | GitHub, *About pull request merges* |
+| Rama (branch) | Línea de trabajo independiente que parte de un punto del repositorio y permite desarrollar un cambio sin afectar `main` hasta fusionarlo. | GitHub, *About pull requests* |
+| Branch protection | Reglas sobre una rama (p. ej. `main`) que impiden el *merge* directo y exigen condiciones como *checks* en verde y aprobaciones. En esta demostración se implementó con *rulesets* de GitHub (ver sección 5). | GitHub, *About rulesets* |
+| Status check | Resultado (verde/rojo) que un *workflow* o integración publica sobre un commit o PR; cuando es obligatorio, su estado en verde condiciona el *merge*. | GitHub, *About status checks* |
+| CI/CD | Integración y validación automáticas y frecuentes de los cambios (CI) y automatización de su publicación o despliegue (CD). La demostración usa la parte de CI. | Fowler (2024) |
+| GitHub Actions | Servicio de automatización de GitHub que ejecuta *workflows* (definidos en YAML) ante eventos del repositorio, como abrir o actualizar un PR. | GitHub, *GitHub Actions* |
+| Workflow / pipeline | Secuencia automatizada de pasos (compilar, probar, analizar) disparada por un evento. En GitHub se implementa como *workflow*. | GitHub, *GitHub Actions* |
+| Linter / análisis estático | Herramienta que examina el código sin ejecutarlo para detectar errores, malas prácticas y violaciones de estilo. En esta demostración se usa Checkstyle (Java); el estándar de TypeScript del frontend aún no se verifica (ESLint pendiente, ver sección 4.3). | Checkstyle (2026) |
+| CODEOWNERS | Archivo (`.github/CODEOWNERS`) que define quién es dueño de cada parte del repositorio; GitHub solicita su revisión cuando un PR toca sus archivos. | GitHub, *About code owners* |
+| Code Owner | Persona o equipo responsable de revisar los archivos que le corresponden; con la regla *Require review from Code Owners*, su aprobación es obligatoria. | GitHub, *About code owners* |
+| Revisor automático con IA | Herramienta basada en modelos de lenguaje que analiza el *diff* del PR y produce un resumen y comentarios (posibles errores, estilo, riesgos). En esta demostración: CodeRabbit. No sustituye al revisor humano. | CodeRabbit (2026) |
+| Rubber-stamping | Aprobar un PR sin revisarlo de verdad. Es el principal riesgo de calidad que una revisión seria debe evitar. | Google (s. f.); SmartBear (s. f.) |
+| Falso positivo / falso negativo | *Falso positivo*: marcar como problema algo que no lo es. *Falso negativo*: no detectar un problema que sí existe. Ambos importan al evaluar un linter o un revisor de IA. | Perforce (s. f.) |
+| Criterios de aceptación | Condiciones concretas y verificables que un cambio debe cumplir para considerarse terminado y aprobable; derivan del caso de uso o requerimiento. | Atlassian (s. f.) |
+| Arquitectura por capas | Organización del código en capas con responsabilidades separadas (API, lógica/dominio, persistencia). La revisión verifica que el cambio respete esa separación. | Richards (2015) |
+| Secreto quemado (hardcoded secret) | Credencial, contraseña o llave de API escrita directamente en el código fuente. Mala práctica de seguridad que debe detectarse antes del *merge*. | OWASP (s. f.) |
 
 ## 2. Punto de partida del análisis
 <!-- Responsable: [Nombre 1] · Preguntas iniciales, primeras fuentes y decisiones de alcance -->
 
+El análisis arrancó con cuatro preguntas que guiaron toda la investigación:
+
+- ¿Qué es realmente una revisión de código y para qué sirve, más allá de "buscar errores"?
+- ¿Qué aporta y qué **no** aporta una IA en la revisión, y dónde sigue siendo imprescindible el criterio humano?
+- ¿Cómo se ve un flujo de *pull request* completo y realista: plantilla, CI, linters, revisor de IA, aprobación humana y protección de rama?
+- ¿Cómo medir todo esto de forma honesta? De esta última pregunta nació la idea de un PR con errores sembrados y una tabla que compara qué detecta cada actor (CI, IA, humano).
+
+Las primeras fuentes consultadas fueron la documentación oficial de GitHub (pull requests, *rulesets*, CODEOWNERS y Actions), la documentación de CodeRabbit y la guía de prácticas de ingeniería de Google como marco conceptual de la revisión de código (Google, s. f.).
+
+El alcance se acotó con tres decisiones:
+
+1. **No es una comparación de herramientas**, sino un flujo mostrado de principio a fin con una combinación concreta de herramientas y su justificación (ver sección 4).
+2. Se trabajó sobre una **copia pública de un proyecto real** (TallerAuto, un sistema para un taller automotriz) en lugar de ejemplos de juguete, para que los PR tocaran código, pruebas y arquitectura verdaderos.
+3. La medición se limitó a **seis errores sembrados** de categorías distintas (violación de estilo, prueba que falla, secreto quemado, caso borde/null, regla de negocio incumplida y violación de la arquitectura en capas), para comparar qué detecta el CI, la IA y el revisor humano (ver sección 9).
+
+El trabajo se dividió en tres partes: Fundamentos (secciones 1–3, 7 y 8), Infraestructura y flujo (secciones 4–6) y PR sembrado y hallazgos (secciones 9–10).
+
 ## 3. Importancia de la revisión de código y el pull request como artefacto
 <!-- Responsable: [Nombre 1] · Objetivos de la revisión; descripción, plantilla, tamaño y criterios de aceptación del PR -->
+
+### 3.1 Por qué importa revisar el código
+
+La revisión de código es el último filtro humano antes de que un cambio entre a `main`. No sustituye a las pruebas automatizadas ni a los linters: las complementa con algo que esas herramientas no dan, que es **juicio**. Una prueba indica si el código hace lo que la prueba espera; un revisor indica si el código hace lo **correcto**, si está bien diseñado y si otra persona podrá mantenerlo (Google, s. f.).
+
+Los objetivos concretos de una revisión son:
+
+1. **Correctitud:** que el cambio cumpla el requerimiento o caso de uso y maneje los casos borde.
+2. **Diseño y arquitectura:** que respete la separación por capas y no introduzca deuda técnica (en TallerAuto, ver `docs/05-diseno/`) (Richards, 2015).
+3. **Legibilidad y mantenibilidad:** que otra persona pueda entender y modificar el código después.
+4. **Seguridad:** que no haya secretos quemados ni vulnerabilidades evidentes (OWASP, s. f.).
+5. **Difusión de conocimiento:** que el equipo conozca el cambio y no quede en una sola persona.
+6. **Cumplimiento de estándares:** estilo, convenciones y pruebas presentes.
+
+La idea de fondo, siguiendo la guía de Google, es que revisar no busca encontrar culpables, sino que el código mejore y que más de una persona lo comprenda (Google, s. f.).
+
+### 3.2 El pull request como artefacto
+
+El PR no es solo "el botón de *merge*": es un **artefacto de ingeniería** que documenta qué cambió, por qué, cómo se validó y quién lo aprobó. En la demostración se estandarizó con una plantilla (`.github/pull_request_template.md`) que obliga a pensar antes de pedir revisión. Sus secciones y lo que aportan a la revisión son:
+
+| Sección de la plantilla | Qué aporta a la revisión |
+|---|---|
+| Descripción | Contexto en dos o tres líneas: qué cambia y por qué. Evita que el revisor adivine. |
+| Caso de uso / requerimiento | Liga el cambio a un CU o RF (p. ej. CU-01). Permite revisar contra el requerimiento, no contra el gusto. |
+| Tipo de cambio | Clasifica (funcionalidad, corrección, refactor, documentación, infraestructura) y ajusta la profundidad de la revisión. |
+| Criterios de aceptación | Lista verificable de lo que debe cumplirse para aprobar (Atlassian, s. f.). |
+| Cómo se probó | Comandos y resultados (`./mvnw verify`, `npm run build`, `npm test`, prueba manual). Evidencia reproducible. |
+| Tamaño del PR | Obliga a declarar el tamaño y a dividir si supera ~400 líneas. |
+| Participación de la IA | Específico de esta investigación: declara si se usó IA para el código o para revisar. |
+| Lista de verificación del autor | Autocontrol previo: un solo propósito, *diff* auto-revisado, CI en verde, capas respetadas, sin secretos. |
+| Notas para quien revisa | Dirige la atención del revisor a lo importante. |
+
+Como buenas prácticas, el PR debe ser **pequeño y enfocado** (un solo propósito): los PR grandes se revisan peor y esconden errores, y la evidencia de la industria recomienda revisar menos de 200 a 400 líneas por sesión, porque la capacidad de detección cae tras unos 60 minutos (SmartBear, s. f.). La descripción debe ser autosuficiente, los criterios de aceptación explícitos y la trazabilidad al CU/RF clara, de modo que el PR quede conectado con el análisis del sistema.
 
 ## 4. Herramientas utilizadas y su contexto
 <!-- Responsable: Jared Morales -->
@@ -185,8 +245,49 @@ Las capturas citadas como *(Evidencia NN)* están en [`evidencia/`](evidencia/RE
 ## 7. Responsabilidades del revisor humano y del revisor de IA
 <!-- Responsable: [Nombre 1] · Matriz de responsabilidades; cómo evitar aprobar sin leer -->
 
+El principio que ordena esta sección es simple: **la IA sugiere, el humano decide y responde**. La responsabilidad del *merge* no se delega a una herramienta. Esto es coherente con la configuración de la demostración, donde CodeRabbit quedó con `request_changes_workflow: false` y no puede aprobar ni bloquear un PR (ver sección 6.2). La siguiente matriz reparte en qué es fuerte cada uno:
+
+| Aspecto | Revisor de IA (CodeRabbit) | Revisor humano |
+|---|---|---|
+| Estilo y patrones comunes | Los detecta rápido, resume el *diff* y señala posibles errores | Confirma lo relevante |
+| Volumen | Revisa todo el *diff* sin cansarse | Prioriza lo crítico |
+| Regla de negocio | Puede no saber qué espera el caso de uso | Verifica contra el requerimiento real |
+| Arquitectura | No conoce las decisiones de diseño del equipo | Valida la separación por capas |
+| Contexto del proyecto | Limitado a lo que ve en el *diff* | Conoce el sistema completo |
+| Falsos positivos | Los genera | Los descarta justificando |
+| Decisión final y responsabilidad | Solo **sugiere** | **Aprueba y responde** por el *merge* |
+
+**El riesgo del rubber-stamping.** Aprobar sin revisar de verdad es el principal riesgo de calidad, y con IA *aumenta*: es tentador ver "CodeRabbit lo revisó y el CI está en verde" y dar la aprobación sin leer el *diff*. Pero ni la IA ni el CI detectan todo (regla de negocio, intención, contexto), de modo que una aprobación automática traslada errores a `main` con una falsa sensación de seguridad (Google, s. f.; SmartBear, s. f.).
+
+En la demostración se evita con varias barreras combinadas:
+
+- El *ruleset* de `main` exige aprobación humana (de otra persona) además de los *checks* en verde, y descarta aprobaciones viejas si el autor sube nuevos commits (GitHub, *About rulesets*; ver sección 5).
+- El archivo `.github/CODEOWNERS` hace que GitHub solicite la revisión de un responsable del archivo tocado (GitHub, *About code owners*).
+- El revisor humano debe **leer el *diff* y validar el requerimiento**, no solo mirar los *checks*.
+- Regla del equipo: aceptar una sugerencia de la IA **solo después de verificarla**, y **rechazar** las que sean falso positivo **explicando por qué** (ejemplos reales en la sección 6.3 y en los hallazgos de la sección 9).
+- La plantilla obliga al autor a auto-revisarse antes de pedir revisión, lo que reduce el ruido para el revisor.
+
 ## 8. Comunicación y resolución de conflictos en revisiones
 <!-- Responsable: [Nombre 1] -->
+
+### 8.1 Cómo comentar bien
+
+- **Sobre el código, no sobre la persona:** "esta función puede recibir `null`" en lugar de "no pensaste en el null" (Google, s. f.).
+- **Explicar el porqué:** una sugerencia con su razón se acepta mejor que una orden.
+- **Distinguir severidad:** separar lo que **bloquea** (error, regla de negocio, secreto) de lo que es preferencia (marcado como "nit:" para detalles menores).
+- **Ser concreto:** proponer la alternativa, no solo señalar el problema.
+- **Reconocer lo que está bien hecho**, no solo lo que falla.
+
+### 8.2 Resolución de desacuerdos
+
+1. Se discute en el hilo del PR con argumentos técnicos (legibilidad, requerimiento, rendimiento).
+2. Si el autor no está de acuerdo con una sugerencia, incluida la de la IA, puede **rechazarla justificando**, y eso es válido y deseable. En esta demostración ocurrió: se descartó una recomendación de CodeRabbit explicando por qué no aplicaba, y la IA retiró la sugerencia (ver sección 6.3, paso 5).
+3. Si el desacuerdo persiste, decide quien tiene la responsabilidad del archivo (Code Owner) o se escala a una conversación corta fuera del hilo.
+4. El PR **no se fusiona** hasta resolver los comentarios bloqueantes.
+
+### 8.3 Con la IA
+
+Los comentarios de la IA se tratan como sugerencias de un revisor más, no como verdad. Se puede dialogar con `@coderabbitai` (preguntar o pedir una corrección), pero la decisión y el cierre del hilo son humanos (CodeRabbit, 2026). Un falso positivo de la IA se cierra con una respuesta breve que explique por qué no aplica, y queda como evidencia.
 
 ## 9. Hallazgos
 <!-- Responsable: [Nombre 3] · Con evidencia: qué funcionó, qué falló, errores de la IA, riesgos, tiempo -->
@@ -208,12 +309,22 @@ Las capturas citadas como *(Evidencia NN)* están en [`evidencia/`](evidencia/RE
 ## 11. Referencias
 <!-- Todos · Formato consistente (APA) -->
 
-<!-- Referencias de las secciones 4, 5 y 6 (Jared). Los demás agregan las suyas y al final se ordenan alfabéticamente. -->
+<!-- Lista unificada (secciones 1-8, de Jared y José), ordenada alfabéticamente por autor. Las secciones 9-10 agregan las suyas y se reordena al final. -->
 
+- Atlassian. (s. f.). *Acceptance criteria*. https://www.atlassian.com/work-management/project-management/acceptance-criteria
+- Checkstyle. (2026). *Checkstyle*. https://checkstyle.org
 - CodeRabbit. (2026). *Automatic reviews*. https://docs.coderabbit.ai/configuration/auto-review
 - CodeRabbit. (2026). *Code guidelines*. https://docs.coderabbit.ai/knowledge-base/code-guidelines
 - CodeRabbit. (2026). *Plans*. https://docs.coderabbit.ai/management/plans
+- Fowler, M. (2024). *Continuous integration*. https://martinfowler.com/articles/continuousIntegration.html
+- GitHub. (s. f.). *About code owners*. https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+- GitHub. (s. f.). *About pull request merges*. https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges
+- GitHub. (s. f.). *About pull requests*. https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
 - GitHub. (2026). *About rulesets*. https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets
 - GitHub. (2026). *About status checks*. https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks
 - GitHub. (2026). *GitHub Actions documentation*. https://docs.github.com/en/actions
-- Checkstyle. (2026). *Checkstyle*. https://checkstyle.org
+- Google. (s. f.). *Code review developer guide: The standard of code review*. https://google.github.io/eng-practices/review/reviewer/standard.html
+- OWASP. (s. f.). *Use of hard-coded password (CWE-798)*. https://owasp.org/www-community/vulnerabilities/Use_of_hard-coded_password
+- Perforce. (s. f.). *What are false positives and false negatives?* https://www.perforce.com/blog/qac/what-are-false-positives-and-false-negatives
+- Richards, M. (2015). *Software architecture patterns*. O'Reilly. https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/
+- SmartBear. (s. f.). *Best kept secrets of peer code review*. https://smartbear.com/resources/webinars/best-kept-secrets-code-review/
