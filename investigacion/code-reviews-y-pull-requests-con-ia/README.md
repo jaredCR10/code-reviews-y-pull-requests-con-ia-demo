@@ -5,10 +5,21 @@
 - **Integrantes:** José Andrés Ramírez Jiménez · Jared Morales Morales · Adrián Barboza Vargas
 - **Repositorio de la demostración:** https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo
 
+### Contenido de la entrega
+
+| Elemento | Dónde |
+|---|---|
+| Documento de investigación | Este archivo (secciones 1 a 11) |
+| Presentación, dividida en tres partes | [`presentacion/`](presentacion/LEEME.md): [Parte 1 · Fundamentos](presentacion/parte1-fundamentos.pptx) · [Parte 2 · Infraestructura y flujo](presentacion/parte2-infraestructura-y-flujo.pptx) · [Parte 3 · PR sembrado y hallazgos](presentacion/parte3-pr-sembrado-y-hallazgos.pptx) |
+| Evidencia de la demostración | [`evidencia/`](evidencia/README.md): capturas, enlaces a los PR y a las ejecuciones del CI |
+| PR del flujo de revisión | [#1](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/1) (CI y revisor de IA) · [#2](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/2) (corrección de una prueba) · [#3](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/3) (plantilla de PR y CODEOWNERS) |
+| PR sembrado (experimento de la Parte 3) | [#7](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/7): cerrado sin integrar, a propósito |
+| PR del documento y la presentación | [#4](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/4) · [#5](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/5) · [#6](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/6) · [#8](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/8) · [#9](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/9) · [#10](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/10) · [#11](https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo/pull/11) |
+
 ---
 
 ## 1. Glosario
-<!-- Responsable: [Nombre 1] · Cada término con palabras propias, relación con el tema y referencia [n] -->
+<!-- Responsable: José Andrés Ramírez Jiménez · Cada término con palabras propias, relación con el tema y referencia [n] -->
 
 | Término | Definición | Fuente |
 |---|---|---|
@@ -38,7 +49,7 @@
 | Secreto quemado (hardcoded secret) | Credencial, contraseña o llave de API escrita directamente en el código fuente. Mala práctica de seguridad que debe detectarse antes del *merge*. | OWASP (s. f.) |
 
 ## 2. Punto de partida del análisis
-<!-- Responsable: [Nombre 1] · Preguntas iniciales, primeras fuentes y decisiones de alcance -->
+<!-- Responsable: José Andrés Ramírez Jiménez · Preguntas iniciales, primeras fuentes y decisiones de alcance -->
 
 El análisis arrancó con cuatro preguntas que guiaron toda la investigación:
 
@@ -58,7 +69,7 @@ El alcance se acotó con tres decisiones:
 El trabajo se dividió en tres partes: Fundamentos (secciones 1–3, 7 y 8), Infraestructura y flujo (secciones 4–6) y PR sembrado y hallazgos (secciones 9–10).
 
 ## 3. Importancia de la revisión de código y el pull request como artefacto
-<!-- Responsable: [Nombre 1] · Objetivos de la revisión; descripción, plantilla, tamaño y criterios de aceptación del PR -->
+<!-- Responsable: José Andrés Ramírez Jiménez · Objetivos de la revisión; descripción, plantilla, tamaño y criterios de aceptación del PR -->
 
 ### 3.1 Por qué importa revisar el código
 
@@ -248,7 +259,7 @@ Las capturas citadas como *(Evidencia NN)* están en [`evidencia/`](evidencia/RE
 5. Crear una rama, hacer un cambio, abrir el PR y seguir los pasos de la tabla 6.2.
 
 ## 7. Responsabilidades del revisor humano y del revisor de IA
-<!-- Responsable: [Nombre 1] · Matriz de responsabilidades; cómo evitar aprobar sin leer -->
+<!-- Responsable: José Andrés Ramírez Jiménez · Matriz de responsabilidades; cómo evitar aprobar sin leer -->
 
 El principio que ordena esta sección es simple: **la IA sugiere, el humano decide y responde**. La responsabilidad del *merge* no se delega a una herramienta. Esto es coherente con la configuración de la demostración, donde CodeRabbit quedó con `request_changes_workflow: false` y no puede aprobar ni bloquear un PR (ver sección 6.2). La siguiente matriz reparte en qué es fuerte cada uno:
 
@@ -273,7 +284,7 @@ En la demostración se evita con varias barreras combinadas:
 - La plantilla obliga al autor a auto-revisarse antes de pedir revisión, lo que reduce el ruido para el revisor.
 
 ## 8. Comunicación y resolución de conflictos en revisiones
-<!-- Responsable: [Nombre 1] -->
+<!-- Responsable: José Andrés Ramírez Jiménez -->
 
 ### 8.1 Cómo comentar bien
 
@@ -387,8 +398,6 @@ Además de los seis defectos, CodeRabbit dejó **dos comentarios extra** (el rev
 
 ## 11. Referencias
 <!-- Todos · Formato consistente (APA) -->
-
-<!-- Lista unificada (secciones 1-8, de Jared y José), ordenada alfabéticamente por autor. Las secciones 9-10 agregan las suyas y se reordena al final. -->
 
 - Atlassian. (s. f.). *Acceptance criteria*. https://www.atlassian.com/work-management/project-management/acceptance-criteria
 - Checkstyle. (2026). *Checkstyle*. https://checkstyle.org
