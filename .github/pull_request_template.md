@@ -33,8 +33,8 @@ Borra las secciones que no apliquen antes de abrirlo.
 
 <!-- Pasos para reproducir la prueba, comandos ejecutados y resultado observado. -->
 
-- [ ] `./mvnw test` (backend) en verde
-- [ ] `npm test` / build del frontend en verde
+- [ ] En `backend/`: `./mvnw test` en verde
+- [ ] En `frontend/`: `npm test` y `npm run build` en verde
 - [ ] Prueba manual descrita abajo
 
 <!-- Describe la prueba manual o pega la salida relevante. -->
