@@ -1,6 +1,6 @@
 # Guía de revisión humana — PR sembrado (José, Persona 1)
 
-> Preparada explorando el repositorio TallerAuto en `origin/main`.
+> Preparada explorando el repositorio TallerAuto en `main`, commit `de03945` (1 nov 2026).
 > Es la "chuleta" para la revisión humana del PR sembrado de Adrián y del PR de Jared.
 > Objetivo: detectar lo que **ni el CI ni la IA** garantizan (reglas de negocio y arquitectura).
 
@@ -57,7 +57,7 @@ CodeRabbit (`.coderabbit.yaml`): perfil "chill", comenta pero nunca aprueba ni b
   nunca queda negativa y no se descuenta.
 - El total del presupuesto lo calcula el handler, no el controlador ni el frontend.
 - Las include se resuelven por composición (CU-02 reutiliza el handler de CU-08, no copia código).
-- Moneda en colones; placa de 5 a 7 alfanuméricos.
+- Moneda en colones. Placa: longitud aproximada de 5 a 7 caracteres; el formato exacto (si el guion es opcional y si cuenta para la longitud, y la normalización) está **pendiente de confirmar**. CU-02 solo muestra el ejemplo `SDF-456`, que no fija esas reglas.
 
 ## 5. Hallazgo útil (inconsistencia doc vs. config)
 
