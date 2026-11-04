@@ -2,7 +2,7 @@
 
 - **Curso:** IF-6100 Análisis y Diseño de Sistemas · II Ciclo 2026
 - **Tema:** 3. Code reviews y pull requests con IA
-- **Integrantes:** José Andrés Ramírez · Jared Morales Morales · [Nombre 3]
+- **Integrantes:** José Andrés Ramírez Jiménez · Jared Morales Morales · Adrián Barboza Vargas
 - **Repositorio de la demostración:** https://github.com/jaredCR10/code-reviews-y-pull-requests-con-ia-demo
 
 ---
@@ -14,7 +14,7 @@
 |---|---|---|
 | Pull request (PR) | Solicitud para incorporar los cambios de una rama en otra (normalmente `main`). Reúne el *diff*, la descripción, la discusión, los *checks* automáticos y las aprobaciones; es el punto donde se decide si el código se integra. | GitHub, *About pull requests* |
 | Code review | Revisión del código de un cambio por una o más personas distintas de quien lo escribió, para detectar errores, mejorar el diseño y compartir conocimiento antes de integrarlo. | Google (s. f.) |
-| Merge | Integración de los cambios de la rama del PR en la rama destino (*merge commit*, *squash* o *rebase*). En esta demostración solo ocurre con los *checks* en verde y aprobación humana. | GitHub, *About pull request merges* |
+| Merge | Integración de los cambios de la rama del PR en la rama destino (*merge commit*, *squash* o *rebase*). A partir de la activación del *ruleset* en `main`, solo ocurre con los *checks* en verde y aprobación humana (los PR previos a esa activación se integraron sin esa restricción; ver sección 6.3). | GitHub, *About pull request merges* |
 | Diff | Diferencias línea por línea entre el código antes y después del cambio; es lo que realmente se revisa en un PR. | GitHub, *About pull request merges* |
 | Rama (branch) | Línea de trabajo independiente que parte de un punto del repositorio y permite desarrollar un cambio sin afectar `main` hasta fusionarlo. | GitHub, *About pull requests* |
 | Branch protection | Reglas sobre una rama (p. ej. `main`) que impiden el *merge* directo y exigen condiciones como *checks* en verde y aprobaciones. En esta demostración se implementó con *rulesets* de GitHub (ver sección 5). | GitHub, *About rulesets* |
@@ -264,7 +264,7 @@ En la demostración se evita con varias barreras combinadas:
 - El *ruleset* de `main` exige aprobación humana (de otra persona) además de los *checks* en verde, y descarta aprobaciones viejas si el autor sube nuevos commits (GitHub, *About rulesets*; ver sección 5).
 - El archivo `.github/CODEOWNERS` hace que GitHub solicite la revisión de un responsable del archivo tocado (GitHub, *About code owners*).
 - El revisor humano debe **leer el *diff* y validar el requerimiento**, no solo mirar los *checks*.
-- Regla del equipo: aceptar una sugerencia de la IA **solo después de verificarla**, y **rechazar** las que sean falso positivo **explicando por qué** (ejemplos reales en la sección 6.3 y en los hallazgos de la sección 9).
+- Regla del equipo: aceptar una sugerencia de la IA **solo después de verificarla**, y **rechazar** las que sean falso positivo **explicando por qué** (ejemplo real en la sección 6.3; los hallazgos del PR sembrado se recopilarán en la sección 9).
 - La plantilla obliga al autor a auto-revisarse antes de pedir revisión, lo que reduce el ruido para el revisor.
 
 ## 8. Comunicación y resolución de conflictos en revisiones
@@ -287,7 +287,7 @@ En la demostración se evita con varias barreras combinadas:
 
 ### 8.3 Con la IA
 
-Los comentarios de la IA se tratan como sugerencias de un revisor más, no como verdad. Se puede dialogar con `@coderabbitai` (preguntar o pedir una corrección), pero la decisión y el cierre del hilo son humanos (CodeRabbit, 2026). Un falso positivo de la IA se cierra con una respuesta breve que explique por qué no aplica, y queda como evidencia.
+Los comentarios de la IA se tratan como sugerencias de un revisor más, no como verdad. Se puede dialogar con `@coderabbitai` (preguntar o pedir una corrección). La **aceptación o el rechazo** de cada comentario son siempre humanos; el **cierre del hilo** puede hacerlo la persona o la propia herramienta según la acción (por ejemplo, al retirar una sugerencia; ver sección 6.3) (CodeRabbit, 2026). Un falso positivo de la IA se cierra con una respuesta breve que explique por qué no aplica, y queda como evidencia.
 
 ## 9. Hallazgos
 <!-- Responsable: [Nombre 3] · Con evidencia: qué funcionó, qué falló, errores de la IA, riesgos, tiempo -->
