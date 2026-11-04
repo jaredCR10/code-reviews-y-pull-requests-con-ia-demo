@@ -62,4 +62,9 @@ public class InsumoEntity {
     public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }
+
+    /** Suma a la existencia la cantidad recibida (CU-13). */
+    public void registrarIngreso(int cantidad) {
+        this.existencia += cantidad;
+    }
 }
